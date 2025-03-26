@@ -146,6 +146,17 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("0101", "0180"),
     ),
+    # ESMValTool ZEC data
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "tas"],
+            experiment_id=["1pctCO2", "esm-1pct-brch-1000PgC"],
+        ),
+        remove_ensembles=True,
+        time_span=("0158", "0268"),
+    ),
     # ILAMB data
     CMIP6Request(
         facets=dict(
