@@ -146,6 +146,27 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("0101", "0180"),
     ),
+    # ESMValTool TCRE data
+    CMIP6Request(
+        facets=dict(
+            source_id="MPI-ESM1-2-LR",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "fco2antt", "tas"],
+            experiment_id=["esm-1pctCO2"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "1915"),
+    ),
+    CMIP6Request(
+        facets=dict(
+            source_id="MPI-ESM1-2-LR",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "tas"],
+            experiment_id=["esm-piControl"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "1915"),
+    ),
     # ESMValTool ZEC data
     CMIP6Request(
         facets=dict(
