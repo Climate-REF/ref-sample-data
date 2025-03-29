@@ -29,6 +29,9 @@ xesmf = ">=0.8.7,<0.9"
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
+# TODO: Pin a release
+# This rev includes the PMP reference data
+cmip-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/ref", rev = "7ea9c966fc44b91e4b0e3d8b31f6f2c3f1445677" }
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"
