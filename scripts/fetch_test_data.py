@@ -6,41 +6,11 @@ import pandas as pd
 import pooch
 import typer
 import xarray as xr
-from intake_esgf import ESGFCatalog
 
 from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
-
-
-def fetch_datasets(request: DataRequest, quiet: bool) -> pd.DataFrame:
-    """
-    Fetch the datasets from ESGF.
-
-    Parameters
-    ----------
-    request
-        The request object
-    quiet
-        Whether to suppress progress messages from intake-esgf
-
-    Returns
-    -------
-        Dataframe that contains metadata and paths to the fetched datasets
-    """
-    cat = ESGFCatalog()
-
-    cat.search(**request.facets)
-    if request.remove_ensembles:
-        cat.remove_ensembles()
-
-    path_dict = cat.to_path_dict(prefer_streaming=False, minimal_keys=False, quiet=quiet)
-    merged_df = cat.df.merge(pd.Series(path_dict, name="files"), left_on="key", right_index=True)
-    if request.time_span:
-        merged_df["time_start"] = request.time_span[0]
-        merged_df["time_end"] = request.time_span[1]
-    return merged_df
 
 
 def deduplicate_datasets(datasets: pd.DataFrame) -> pd.DataFrame:
@@ -90,7 +60,7 @@ def process_sample_data_request(
     quiet
         Whether to suppress progress messages
     """
-    datasets = fetch_datasets(request, quiet)
+    datasets = request.fetch_datasets()
     datasets = deduplicate_datasets(datasets)
 
     for _, dataset in datasets.iterrows():
@@ -98,7 +68,7 @@ def process_sample_data_request(
             ds_orig = xr.open_dataset(ds_filename)
 
             if decimate:
-                ds_decimated = request.decimate_dataset(ds_orig, request.time_span)
+                ds_decimated = request.decimate_dataset(ds_orig)
             else:
                 ds_decimated = ds_orig
             if ds_decimated is None:
