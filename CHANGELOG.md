@@ -21,6 +21,17 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.4.3 (2025-03-29)
+
+### Features
+
+- Add datasets that from pmp which are not yet published on obs4MIPs ([#24](https://github.com/CMIP-REF/ref-sample-data/pulls/24))
+
+### Improvements
+
+- Refactored intake-esgf-based data requests to have a common base class (`ref_sample_data.data_request.base.IntakeESGFDataRequest`) ([#23](https://github.com/CMIP-REF/ref-sample-data/pulls/23))
+
+
 ## ref-sample-data 0.4.2 (2025-03-27)
 
 ### Features
