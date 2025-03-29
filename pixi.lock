@@ -8180,7 +8180,7 @@ packages:
 - pypi: .
   name: ref-sample-data
   version: 0.4.2
-  sha256: 3b1ed1b42c0ee31a82999ad223c5c6a214817b8348c91700e4077af474c2eb45
+  sha256: a99b780b02296931b10ba1d09297d3aa44724264ac963e734ad0530dcddaeefc
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/requests-2.32.3-pyhd8ed1ab_1.conda
