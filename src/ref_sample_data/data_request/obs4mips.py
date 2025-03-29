@@ -6,12 +6,12 @@ from typing import Any
 import pandas as pd
 import xarray as xr
 
-from ref_sample_data.data_request.base import DataRequest
+from ref_sample_data.data_request.base import IntakeESGFDataRequest
 from ref_sample_data.data_request.cmip6 import prefix_to_filename
 from ref_sample_data.resample import decimate_curvilinear, decimate_rectilinear
 
 
-class Obs4MIPsRequest(DataRequest):
+class Obs4MIPsRequest(IntakeESGFDataRequest):
     """
     Represents a Obs4MIPs dataset request
     """
@@ -65,7 +65,7 @@ class Obs4MIPsRequest(DataRequest):
         assert all(key in self.avail_facets for key in self.obs4mips_path_items), "Error message"
         assert all(key in self.avail_facets for key in self.obs4mips_filename_paths), "Error message"
 
-    def decimate_dataset(self, dataset: xr.Dataset, time_span: tuple[str, str] | None) -> xr.Dataset | None:
+    def decimate_dataset(self, dataset: xr.Dataset) -> xr.Dataset | None:
         """
         Downscale the dataset to a smaller size.
 
@@ -94,8 +94,8 @@ class Obs4MIPsRequest(DataRequest):
         else:
             raise ValueError("Cannot decimate this grid: too many dimensions")
 
-        if "time" in dataset.dims and time_span is not None:
-            result = result.sel(time=slice(*time_span))
+        if "time" in dataset.dims and self.time_span is not None:
+            result = result.sel(time=slice(*self.time_span))
             if result.time.size == 0:
                 result = None
 

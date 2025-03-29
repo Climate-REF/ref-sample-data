@@ -6,7 +6,7 @@ from typing import Any
 import pandas as pd
 import xarray as xr
 
-from ref_sample_data.data_request.base import DataRequest
+from ref_sample_data.data_request.base import IntakeESGFDataRequest
 from ref_sample_data.resample import decimate_curvilinear, decimate_rectilinear
 
 
@@ -37,7 +37,7 @@ def prefix_to_filename(ds, filename_prefix: str) -> str:
     return filename
 
 
-class CMIP6Request(DataRequest):
+class CMIP6Request(IntakeESGFDataRequest):
     """
     Represents a CMIP6 dataset request
 
@@ -86,7 +86,7 @@ class CMIP6Request(DataRequest):
         assert all(key in self.avail_facets for key in self.cmip6_path_items), "Error message"
         assert all(key in self.avail_facets for key in self.cmip6_filename_paths), "Error message"
 
-    def decimate_dataset(self, dataset: xr.Dataset, time_span: tuple[str, str] | None) -> xr.Dataset | None:
+    def decimate_dataset(self, dataset: xr.Dataset) -> xr.Dataset | None:
         """
         Downscale the dataset to a smaller size.
 
@@ -115,8 +115,8 @@ class CMIP6Request(DataRequest):
         else:
             raise ValueError("Cannot decimate this grid: too many dimensions")
 
-        if "time" in dataset.dims and time_span is not None:
-            result = result.sel(time=slice(*time_span))
+        if "time" in dataset.dims and self.time_span is not None:
+            result = result.sel(time=slice(*self.time_span))
             if result.time.size == 0:
                 result = None
 

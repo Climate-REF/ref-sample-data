@@ -11,4 +11,4 @@ from .data_request.base import DataRequest
 from .data_request.cmip6 import CMIP6Request
 from .data_request.obs4mips import Obs4MIPsRequest
 
-__all__ = ["DataRequest", "CMIP6Request", "Obs4MIPsRequest"]
+__all__ = ["CMIP6Request", "DataRequest", "Obs4MIPsRequest"]
