@@ -34,6 +34,34 @@ class DataRequest(Protocol):
         ...
 
 
+def _deduplicate_datasets(datasets: pd.DataFrame) -> pd.DataFrame:
+    """
+    Deduplicate a dataset collection.
+
+    Uses the metadata from the first dataset in each group,
+    but expands the time range to the min/max timespan of the group.
+
+    Parameters
+    ----------
+    datasets
+        The dataset collection
+
+    Returns
+    -------
+    pd.DataFrame
+        The deduplicated dataset collection spanning the times requested
+    """
+
+    def _deduplicate_group(group: pd.DataFrame) -> pd.DataFrame:
+        first = group.iloc[0].copy()
+        first.time_start = group.time_start.min()
+        first.time_end = group.time_end.max()
+
+        return first
+
+    return datasets.groupby("key").apply(_deduplicate_group, include_groups=False).reset_index()
+
+
 class IntakeESGFDataRequest(DataRequest):
     """
     A data request that fetches datasets from ESGF using intake-esgf.
@@ -56,4 +84,4 @@ class IntakeESGFDataRequest(DataRequest):
         if self.time_span:
             merged_df["time_start"] = self.time_span[0]
             merged_df["time_end"] = self.time_span[1]
-        return merged_df
+        return _deduplicate_datasets(merged_df)
