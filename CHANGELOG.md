@@ -21,6 +21,14 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.4.2 (2025-03-27)
+
+### Features
+
+- Added data for Zero Emission Commitment metric. ([#21](https://github.com/CMIP-REF/ref-sample-data/pulls/21))
+- Added data for Transient Climate Response to Cumulative CO2 Emissions (TCRE) metric. ([#22](https://github.com/CMIP-REF/ref-sample-data/pulls/22))
+
+
 ## ref-sample-data 0.4.1 (2025-03-01)
 
 ### Bug Fixes
