@@ -2,43 +2,14 @@ import pathlib
 from pathlib import Path
 from typing import Annotated
 
-import pandas as pd
 import pooch
 import typer
 import xarray as xr
 
-from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest
+from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest, Obs4REFRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
-
-
-def deduplicate_datasets(datasets: pd.DataFrame) -> pd.DataFrame:
-    """
-    Deduplicate a dataset collection.
-
-    Uses the metadata from the first dataset in each group,
-    but expands the time range to the min/max timespan of the group.
-
-    Parameters
-    ----------
-    datasets
-        The dataset collection
-
-    Returns
-    -------
-    pd.DataFrame
-        The deduplicated dataset collection spanning the times requested
-    """
-
-    def _deduplicate_group(group: pd.DataFrame) -> pd.DataFrame:
-        first = group.iloc[0].copy()
-        first.time_start = group.time_start.min()
-        first.time_end = group.time_end.max()
-
-        return first
-
-    return datasets.groupby("key").apply(_deduplicate_group, include_groups=False).reset_index()
 
 
 def process_sample_data_request(
@@ -61,7 +32,6 @@ def process_sample_data_request(
         Whether to suppress progress messages
     """
     datasets = request.fetch_datasets()
-    datasets = deduplicate_datasets(datasets)
 
     for _, dataset in datasets.iterrows():
         for ds_filename in dataset["files"]:
@@ -183,6 +153,8 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2002", "2016"),
     ),
+    # All unpublished obs4mips datasets
+    Obs4REFRequest(),
 ]
 
 

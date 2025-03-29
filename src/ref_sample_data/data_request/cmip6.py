@@ -94,8 +94,6 @@ class CMIP6Request(IntakeESGFDataRequest):
         ----------
         dataset
             The dataset to downscale
-        time_span
-            The time span to extract from a dataset
 
         Returns
         -------

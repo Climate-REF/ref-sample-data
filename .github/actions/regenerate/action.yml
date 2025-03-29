@@ -5,7 +5,6 @@ runs:
   steps:
     - uses: ./.github/actions/setup
       with:
-        python-version: 3.12
         cache-esgf: true
 
     - name: Verify registry
