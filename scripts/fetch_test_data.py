@@ -129,12 +129,12 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("2000", "2025"),
     ),
-    # PMP PDO data
+    # PMP modes of variability data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "ts"],
+            variable_id=["areacella", "ts", "psl"],
             experiment_id=["historical", "hist-GHG"],
             variant_label=["r1i1p1f1", "r2i1p1f1"],
         ),
