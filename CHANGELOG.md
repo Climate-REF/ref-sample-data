@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.4.4 (2025-04-03)
+
+### Features
+
+- Added PSL data for PMP's extratropical modes of variability ([#25](https://github.com/CMIP-REF/ref-sample-data/pulls/25))
+
+
 ## ref-sample-data 0.4.3 (2025-03-29)
 
 ### Features
