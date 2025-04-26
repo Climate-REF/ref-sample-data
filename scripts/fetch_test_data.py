@@ -118,6 +118,17 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("0158", "0268"),
     ),
+    # ESMValTool Sea Ice Area Seasonal Cycle data
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacello", "siconc"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1979", "2014"),
+    ),
     # ILAMB data
     CMIP6Request(
         facets=dict(
