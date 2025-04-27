@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.4.5 (2025-04-27)
+
+### Features
+
+- Added sample data for sea ice area seasonal cycle and time series metric. ([#26](https://github.com/CMIP-REF/ref-sample-data/pulls/26))
+
+
 ## ref-sample-data 0.4.4 (2025-04-03)
 
 ### Features
