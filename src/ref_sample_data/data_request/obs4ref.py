@@ -19,6 +19,8 @@ class Obs4REFRequest(DataRequest):
     ```
     """
 
+    source_type = "obs4REF"
+
     def fetch_datasets(self) -> pd.DataFrame:
         """
         Fetch the datasets from the source

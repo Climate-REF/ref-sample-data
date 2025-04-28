@@ -41,7 +41,10 @@ class CMIP6Request(IntakeESGFDataRequest):
     """
     Represents a CMIP6 dataset request
 
+    These data are fetched from ESGF and decimated according to their grid type
     """
+
+    source_type = "CMIP6"
 
     cmip6_path_items = (
         "mip_era",

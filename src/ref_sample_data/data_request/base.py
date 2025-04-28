@@ -15,11 +15,17 @@ class DataRequest(Protocol):
     differently to generate the sample data.
     """
 
+    source_type: str
+    time_span: tuple[str, str] | None = None
+
     def fetch_datasets(self) -> pd.DataFrame:
         """
         Fetch the datasets from the source
 
         Returns a dataframe of the metadata and paths to the fetched datasets.
+        This dataframe must contain at minimimum the following columns:
+        * key: A unique identifier for the dataset
+        * files: A list of files for the dataset
         """
         ...
 
@@ -69,7 +75,6 @@ class IntakeESGFDataRequest(DataRequest):
 
     facets: dict[str, str | tuple[str, ...]]
     remove_ensembles: bool
-    time_span: tuple[str, str]
 
     def fetch_datasets(self) -> pd.DataFrame:
         """Fetch the datasets from the ESGF."""

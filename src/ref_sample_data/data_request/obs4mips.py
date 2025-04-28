@@ -16,6 +16,8 @@ class Obs4MIPsRequest(IntakeESGFDataRequest):
     Represents a Obs4MIPs dataset request
     """
 
+    source_type = "obs4MIPs"
+
     obs4mips_path_items = (
         "activity_id",
         "institution_id",
