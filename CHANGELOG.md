@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.4.6 (2025-04-28)
+
+### Features
+
+- Added climate at global warmings levels sample data. ([#27](https://github.com/CMIP-REF/ref-sample-data/pulls/27))
+
+
 ## ref-sample-data 0.4.5 (2025-04-27)
 
 ### Features
