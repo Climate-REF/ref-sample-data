@@ -21,6 +21,14 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.5.0 (2025-04-28)
+
+### Features
+
+- Deduplicate datasets if multiple timespans are specified.
+  The superset of the timespans is used to create the output files. ([#28](https://github.com/CMIP-REF/ref-sample-data/pulls/28))
+
+
 ## ref-sample-data 0.4.6 (2025-04-28)
 
 ### Features
