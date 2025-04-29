@@ -153,6 +153,17 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("1850", "2100"),
     ),
+    # ESMValTool Cloud radiative effects
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "rlut", "rlutcs", "rsut", "rsutcs"],
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("2005", "2014"),
+    ),
     # ESMValTool ECS data
     CMIP6Request(
         facets=dict(
