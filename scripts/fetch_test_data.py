@@ -153,6 +153,37 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("1850", "2100"),
     ),
+    # ESMValTool cloud scatterplots
+    CMIP6Request(
+        facets=dict(
+            source_id="CESM2",
+            frequency=["fx", "mon"],
+            variable_id=[
+                "cli",
+                "clivi",
+                "clt",
+                "clwvi",
+                "pr",
+                "rlutcs",
+                "rlut",
+                "rsutcs",
+                "rsut",
+                "ta",
+            ],
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("2007", "2014"),
+    ),
+    Obs4MIPsRequest(
+        facets=dict(
+            source_id="ERA-5",
+            frequency="mon",
+            variable_id="ta",
+        ),
+        remove_ensembles=False,
+        time_span=("2007", "2015"),
+    ),
     # ESMValTool ECS data
     CMIP6Request(
         facets=dict(
