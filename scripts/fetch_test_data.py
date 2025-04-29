@@ -156,8 +156,8 @@ DATASETS_TO_FETCH = [
     # ESMValTool cloud scatterplots
     CMIP6Request(
         facets=dict(
-            source_id="CESM2",
-            frequency=["fx", "mon"],
+            source_id="CanESM5",
+            table_id=["fx", "Amon"],
             variable_id=[
                 "cli",
                 "clivi",
