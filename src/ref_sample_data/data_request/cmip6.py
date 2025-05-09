@@ -116,7 +116,9 @@ class CMIP6Request(IntakeESGFDataRequest):
         elif has_ij:
             # 2d curvilinear grid (generally ocean variables)
             result = decimate_curvilinear(dataset)
-        elif not skip_decimate:
+        elif skip_decimate:
+            result = dataset
+        else:
             raise ValueError("Cannot decimate this grid: too many dimensions")
 
         if "time" in dataset.dims and self.time_span is not None:
