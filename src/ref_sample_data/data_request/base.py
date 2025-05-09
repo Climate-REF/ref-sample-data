@@ -1,9 +1,9 @@
 import pathlib
 from typing import Protocol
 
+import intake_esgf
 import pandas as pd
 import xarray as xr
-from intake_esgf import ESGFCatalog
 
 
 class DataRequest(Protocol):
@@ -78,7 +78,8 @@ class IntakeESGFDataRequest(DataRequest):
 
     def fetch_datasets(self) -> pd.DataFrame:
         """Fetch the datasets from the ESGF."""
-        cat = ESGFCatalog()
+        intake_esgf.conf.set(all_indices=True)
+        cat = intake_esgf.ESGFCatalog()
 
         cat.search(**self.facets)
         if self.remove_ensembles:

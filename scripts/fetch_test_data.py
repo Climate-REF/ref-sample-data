@@ -99,8 +99,8 @@ def process_sample_data_request(
                     file_path.unlink()
 
         output_filenames = []
-        for ds_filename in dataset["files"]:
-            ds_orig = xr.open_dataset(ds_filename)
+        for ds_filename in sorted(dataset["files"]):
+            ds_orig = xr.open_dataset(ds_filename, chunks={})
 
             if decimate:
                 ds_decimated = request.decimate_dataset(ds_orig)
@@ -111,6 +111,7 @@ def process_sample_data_request(
 
             output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
             output_filename.parent.mkdir(parents=True, exist_ok=True)
+            logger.info(f"Saving {ds_filename} to {output_filename}")
             ds_decimated.to_netcdf(output_filename)
             output_filenames.append(output_filename)
 
@@ -126,6 +127,7 @@ def process_sample_data_request(
         items.append(item)
 
     # Regenerate the registry.txt file
+    logger.info("Making registry")
     pooch.make_registry(str(OUTPUT_PATH), "registry.txt")
     return pd.DataFrame(items)
 
@@ -156,18 +158,19 @@ DATASETS_TO_FETCH = [
     # ESMValTool cloud scatterplots
     CMIP6Request(
         facets=dict(
-            source_id="CanESM5",
+            source_id="MPI-ESM1-2-LR",
             table_id=["fx", "Amon"],
             variable_id=[
+                "areacella",
                 "cli",
                 "clivi",
                 "clt",
                 "clwvi",
                 "pr",
-                "rlutcs",
                 "rlut",
-                "rsutcs",
+                "rlutcs",
                 "rsut",
+                "rsutcs",
                 "ta",
             ],
             experiment_id="historical",
@@ -177,6 +180,7 @@ DATASETS_TO_FETCH = [
     ),
     Obs4MIPsRequest(
         facets=dict(
+            project="obs4MIPs",
             source_id="ERA-5",
             frequency="mon",
             variable_id="ta",
@@ -293,8 +297,10 @@ DATASETS_TO_FETCH = [
 def create_sample_data(
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
+    log_level: str = "INFO",
 ) -> None:
     """Fetch and create sample datasets"""
+    logger.level(log_level)
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
     for dataset_requested in DATASETS_TO_FETCH:

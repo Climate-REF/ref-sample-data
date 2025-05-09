@@ -1,6 +1,7 @@
 import numpy as np
 import xarray as xr
 import xcdat
+import xesmf
 
 
 def _calculate_2d_cell_bounds(
@@ -43,18 +44,18 @@ def decimate_rectilinear(dataset: xr.Dataset) -> xr.Dataset:
     """
     # Decimate the dataset, but update the bounds
     # 10x10 degree grid
-    for data_var in dataset.data_vars:
-        # Some datasets don't correctly use data_vars
-        if "_bnds" in data_var:
-            continue
-        output_grid = xcdat.create_uniform_grid(-90, 90, 10, 0, 359, 10)
-        dataset = dataset.regridder.horizontal(
-            data_var,
-            output_grid=output_grid,
-            tool="xesmf",
-            method="bilinear",
-        )
-    return dataset
+    output_grid = xcdat.create_uniform_grid(-90, 90, 10, 0, 359, 10)
+    regrid = xesmf.Regridder(dataset, output_grid, "bilinear")
+    result = regrid(dataset)
+    result = result.bounds.add_bounds("Y").bounds.add_bounds("X")
+    # Restore attributes and add dataarrays that have not been regridded.
+    for k, v in dataset.data_vars.items():
+        if k in result:
+            result[k].attrs = v.attrs
+        else:
+            result[k] = v
+    result.attrs = dataset.attrs
+    return result
 
 
 def decimate_curvilinear(dataset: xr.Dataset, factor: int = 10) -> xr.Dataset:

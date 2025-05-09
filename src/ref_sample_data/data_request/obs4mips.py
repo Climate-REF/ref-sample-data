@@ -81,23 +81,26 @@ class Obs4MIPsRequest(IntakeESGFDataRequest):
         xr.Dataset
             The downscaled dataset
         """
-        has_latlon = "lat" in dataset.dims and "lon" in dataset.dims
-        has_ij = "i" in dataset.dims and "j" in dataset.dims
+        if "time" in dataset.dims and self.time_span is not None:
+            result = dataset.sel(time=slice(*self.time_span))
+            if result.time.size == 0:
+                # The dataset does not contain data in the requested time range.
+                return None
+        else:
+            result = dataset.copy()
+
+        has_latlon = "lat" in result.dims and "lon" in result.dims
+        has_ij = "i" in result.dims and "j" in result.dims
 
         if has_latlon:
-            assert len(dataset.lat.dims) == 1 and len(dataset.lon.dims) == 1
+            assert len(result.lat.dims) == 1 and len(result.lon.dims) == 1
 
-            result = decimate_rectilinear(dataset)
+            result = decimate_rectilinear(result)
         elif has_ij:
             # 2d curvilinear grid (generally ocean variables)
-            result = decimate_curvilinear(dataset)
+            result = decimate_curvilinear(result)
         else:
             raise ValueError("Cannot decimate this grid: too many dimensions")
-
-        if "time" in dataset.dims and self.time_span is not None:
-            result = result.sel(time=slice(*self.time_span))
-            if result.time.size == 0:
-                result = None
 
         return result
 
