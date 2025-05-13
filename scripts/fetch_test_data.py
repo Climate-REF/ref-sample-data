@@ -256,7 +256,18 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacello", "volcello", "sftof", "tos", "sos", "msftmz"],
+            variable_id=["areacello", "sftof", "tos", "sos", "msftmz"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2000", "2025"),
+    ),
+    # volcello sometimes is given as time dependent
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            table_id=["Ofx"],
+            variable_id=["volcello"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
