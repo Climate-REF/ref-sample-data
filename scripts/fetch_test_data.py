@@ -234,22 +234,44 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai", "nbp"],
+            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai", "snc"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
         time_span=("2000", "2025"),
+    ),
+    # ILAMB longer time run
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["nbp"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "2015"),
     ),
     # IOMB data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacello", "sftof", "tos", "sos", "msftmz"],
+            variable_id=["areacello", "volcello", "sftof", "tos", "sos", "msftmz"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
         time_span=("2000", "2025"),
+    ),
+    # IOMB specific time for ocean heat content
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["thetao"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2005", "2025"),
     ),
     # PMP modes of variability data
     CMIP6Request(
