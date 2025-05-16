@@ -7,7 +7,7 @@ import typer
 import xarray as xr
 from loguru import logger
 
-from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest, Obs4REFRequest
+from ref_sample_data import CMIP6Request, DataRequest, Obs4REFRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
@@ -131,7 +131,7 @@ def process_sample_data_request(
 
 
 DATASETS_TO_FETCH = [
-    # Example metric data
+    # # Example metric data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
@@ -263,18 +263,18 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2000", "2025"),
     ),
-    # Obs4MIPs AIRS data
-    Obs4MIPsRequest(
-        facets=dict(
-            project="obs4MIPs",
-            institution_id="NASA-JPL",
-            frequency="mon",
-            source_id="AIRS-2-1",
-            variable_id="ta",
-        ),
-        remove_ensembles=False,
-        time_span=("2002", "2016"),
-    ),
+    # # Obs4MIPs AIRS data
+    # Obs4MIPsRequest(
+    #     facets=dict(
+    #         project="obs4MIPs",
+    #         institution_id="NASA-JPL",
+    #         frequency="mon",
+    #         source_id="AIRS-2-1",
+    #         variable_id="ta",
+    #     ),
+    #     remove_ensembles=False,
+    #     time_span=("2002", "2016"),
+    # ),
     # All unpublished obs4mips datasets
     Obs4REFRequest(),
 ]
