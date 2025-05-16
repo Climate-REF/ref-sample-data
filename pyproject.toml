@@ -1,6 +1,6 @@
 [project]
 name = "ref-sample-data"
-version = "0.5.2"
+version = "0.6.0"
 description = "CMIP Rapid Evaluation Framework Sample Data"
 readme = "README.md"
 authors = [
@@ -17,21 +17,21 @@ platforms = ["osx-arm64", "linux-64", "win-64"]
 
 [tool.pixi.dependencies]
 python = ">=3.10"
-pooch = "*"
-intake-esgf = "*"
-matplotlib = ">=3.10.0"
-scipy = ">=1.15.0"
-xarray = ">=2024.10.0"
-typer = ">=0.15.1"
+pooch = ">=1.8.2,<2"
+intake-esgf = ">=2025.5.9,<2026"
+matplotlib = ">=3.10.3,<4"
+scipy = ">=1.15.2,<2"
+xarray = ">=2025.1.0,<2025.2"
+typer = ">=0.15.4,<0.16"
 xcdat = ">=0.8.0,<0.9"
 xesmf = ">=0.8.7,<0.9"
+"ruamel.yaml" = ">=0.18.10,<0.19"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
 # TODO: Pin a release
-# This rev includes the PMP reference data
-cmip-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/ref", rev = "7ea9c966fc44b91e4b0e3d8b31f6f2c3f1445677" }
+climate-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/climate-ref", rev = "edd74675376e82b2fd5d906e81170e142e8dfbdd" }
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"

@@ -1,9 +1,10 @@
 import pathlib
 from pathlib import Path
 
+import climate_ref  # noqa
 import pandas as pd
 import xarray as xr
-from cmip_ref.dataset_registry import build_reference_data_registry
+from climate_ref_core.dataset_registry import dataset_registry_manager
 
 from ref_sample_data.data_request.base import DataRequest
 from ref_sample_data.resample import decimate_curvilinear, decimate_rectilinear
@@ -27,7 +28,7 @@ class Obs4REFRequest(DataRequest):
 
         Returns a dataframe of the metadata and paths to the fetched datasets.
         """
-        registry = build_reference_data_registry()
+        registry = dataset_registry_manager["obs4ref"]
 
         datasets = []
         for key in registry.registry.keys():
