@@ -262,28 +262,6 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("2000", "2025"),
     ),
-    # volcello sometimes is given as time dependent
-    CMIP6Request(
-        facets=dict(
-            source_id="ACCESS-ESM1-5",
-            table_id=["Ofx"],
-            variable_id=["volcello"],
-            experiment_id=["historical"],
-        ),
-        remove_ensembles=True,
-        time_span=("2000", "2025"),
-    ),
-    # IOMB specific time for ocean heat content
-    CMIP6Request(
-        facets=dict(
-            source_id="ACCESS-ESM1-5",
-            frequency=["mon"],
-            variable_id=["thetao"],
-            experiment_id=["historical"],
-        ),
-        remove_ensembles=True,
-        time_span=("2005", "2025"),
-    ),
     # PMP modes of variability data
     CMIP6Request(
         facets=dict(
