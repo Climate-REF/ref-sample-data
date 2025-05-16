@@ -21,6 +21,11 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.6.0 (2025-05-16)
+
+No significant changes.
+
+
 ## ref-sample-data 0.5.2 (2025-05-09)
 
 ### Features
