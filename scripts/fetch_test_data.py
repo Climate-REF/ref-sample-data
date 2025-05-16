@@ -234,11 +234,22 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai", "nbp"],
+            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
         time_span=("2000", "2025"),
+    ),
+    # ILAMB data, nbp requires a longer time span
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["nbp"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "2015"),
     ),
     # IOMB data
     CMIP6Request(
