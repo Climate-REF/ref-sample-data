@@ -8351,8 +8351,8 @@ packages:
   timestamp: 1740379663071
 - pypi: .
   name: ref-sample-data
-  version: 0.6.0
-  sha256: 9ef5bcea5a11b3ea0075e4fc45ba2d17aaa3f032c48ecaa2c1e4a6c04b591c73
+  version: 0.6.1
+  sha256: 8d1a55bf766748da01ea07c1d3b46fcfffb0c651360b350b03ce45d7fd24d4e1
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/requests-2.32.3-pyhd8ed1ab_1.conda
