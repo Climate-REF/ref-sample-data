@@ -32,7 +32,9 @@ class Obs4MIPsRequest(IntakeESGFDataRequest):
         "grid_label",
     )
 
-    def __init__(self, facets: dict[str, Any], remove_ensembles: bool, time_span: tuple[str, str] | None):
+    def __init__(
+        self, slug: str, facets: dict[str, Any], remove_ensembles: bool, time_span: tuple[str, str] | None
+    ):
         self.avail_facets = [
             "activity_id",
             "institution_id",
@@ -44,6 +46,7 @@ class Obs4MIPsRequest(IntakeESGFDataRequest):
             "data_node",
         ]
 
+        self.slug = slug
         self.facets = facets
         self.remove_ensembles = remove_ensembles
         self.time_span = time_span

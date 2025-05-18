@@ -15,6 +15,7 @@ class DataRequest(Protocol):
     differently to generate the sample data.
     """
 
+    slug: str
     source_type: str
     time_span: tuple[str, str] | None = None
 

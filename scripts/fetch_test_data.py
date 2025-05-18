@@ -133,6 +133,7 @@ def process_sample_data_request(
 DATASETS_TO_FETCH = [
     # # Example metric data
     CMIP6Request(
+        "example",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -144,6 +145,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Climate at global warmings levels data
     CMIP6Request(
+        slug="esmvaltool-gwl",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -155,6 +157,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Cloud radiative effects
     CMIP6Request(
+        slug="esmvaltool-cloud-radiative-effects",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -166,6 +169,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ECS data
     CMIP6Request(
+        slug="esmvaltool-ecs",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -177,6 +181,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCR data
     CMIP6Request(
+        slug="esmvaltool-tcr",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -188,6 +193,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCRE data
     CMIP6Request(
+        slug="esmvaltool-tcre",
         facets=dict(
             source_id="MPI-ESM1-2-LR",
             frequency=["fx", "mon"],
@@ -198,6 +204,7 @@ DATASETS_TO_FETCH = [
         time_span=("1850", "1915"),
     ),
     CMIP6Request(
+        slug="esmvaltool-extra",
         facets=dict(
             source_id="MPI-ESM1-2-LR",
             frequency=["fx", "mon"],
@@ -209,6 +216,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ZEC data
     CMIP6Request(
+        slug="esmvaltool-zec",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -220,6 +228,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Sea Ice Area Seasonal Cycle data
     CMIP6Request(
+        slug="esmvaltool-sea-ice",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -231,6 +240,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data
     CMIP6Request(
+        slug="ilamb",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -242,6 +252,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data, nbp requires a longer time span
     CMIP6Request(
+        slug="ilamb-nbp",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["mon"],
@@ -253,6 +264,7 @@ DATASETS_TO_FETCH = [
     ),
     # IOMB data
     CMIP6Request(
+        slug="iomb",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -264,12 +276,26 @@ DATASETS_TO_FETCH = [
     ),
     # PMP modes of variability data
     CMIP6Request(
+        slug="pmp-modes-of-variability",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
             variable_id=["areacella", "ts", "psl"],
             experiment_id=["historical", "hist-GHG"],
             variant_label=["r1i1p1f1", "r2i1p1f1"],
+        ),
+        remove_ensembles=False,
+        time_span=("2000", "2025"),
+    ),
+    # PMP ENSO data
+    CMIP6Request(
+        slug="pmp-enso",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "ts", "tauu", "taux", "hfls", "hfss", "rlds", "rlus", "rsds", "rsus"],
+            experiment_id=["historical"],
+            variant_label=["r1i1p1f1"],
         ),
         remove_ensembles=False,
         time_span=("2000", "2025"),
@@ -295,11 +321,16 @@ DATASETS_TO_FETCH = [
 def create_sample_data(
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
+    slug: str | None = None,
 ) -> None:
     """Fetch and create sample datasets"""
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
     for dataset_requested in DATASETS_TO_FETCH:
+        if slug is not None and dataset_requested.slug != slug:
+            logger.info(f"Skipping dataset {dataset_requested.slug} as it does not match the slug {slug}")
+            continue
+
         # Process the request
         new_datasets = process_sample_data_request(
             processed_datasets,
