@@ -315,7 +315,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/41/18/d89a443ed1ab9bcda16264716f809c663866d4ca8de218aa78fd50b38ead/alembic-1.15.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
+      - pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
       - pypi: https://files.pythonhosted.org/packages/1e/f0/ffbef480ac51477053c46d2e59b26499948f8c309bc289122f7c5fa58dab/climate_ref_core-0.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/79/13/13576941bf7cf95026abae43d8427c812c0054408212bf8ed490eda846b0/crc32c-2.7.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -576,7 +576,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/41/18/d89a443ed1ab9bcda16264716f809c663866d4ca8de218aa78fd50b38ead/alembic-1.15.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
+      - pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
       - pypi: https://files.pythonhosted.org/packages/1e/f0/ffbef480ac51477053c46d2e59b26499948f8c309bc289122f7c5fa58dab/climate_ref_core-0.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/47/02/2bd65fdef10139b6a802d83a7f966b7750fe5ffb1042f7cbe5dbb6403869/crc32c-2.7.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -851,7 +851,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/41/18/d89a443ed1ab9bcda16264716f809c663866d4ca8de218aa78fd50b38ead/alembic-1.15.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
+      - pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
       - pypi: https://files.pythonhosted.org/packages/1e/f0/ffbef480ac51477053c46d2e59b26499948f8c309bc289122f7c5fa58dab/climate_ref_core-0.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/db/a0/f01ccfab538db07ef3f6b4ede46357ff147a81dd4f3c59ca6a34c791a549/crc32c-2.7.1-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -2260,7 +2260,7 @@ packages:
   - pkg:pypi/click?source=hash-mapping
   size: 85169
   timestamp: 1734858972635
-- pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
+- pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
   name: climate-ref
   version: 0.5.2
   requires_dist:
