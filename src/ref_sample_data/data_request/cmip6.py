@@ -114,6 +114,9 @@ class CMIP6Request(IntakeESGFDataRequest):
         has_latlon = "lat" in result.dims and "lon" in result.dims
         has_ij = "i" in result.dims and "j" in result.dims
 
+        # The AMOC variable `msftmz` has these strange dims and we do not want to decimate
+        skip_decimate = {"time", "basin", "lev", "lat"}.issubset(dataset.dims)
+
         if has_latlon:
             assert len(result.lat.dims) == 1 and len(result.lon.dims) == 1
 
@@ -121,7 +124,7 @@ class CMIP6Request(IntakeESGFDataRequest):
         elif has_ij:
             # 2d curvilinear grid (generally ocean variables)
             result = decimate_curvilinear(result)
-        else:
+        elif not skip_decimate:
             raise ValueError("Cannot decimate this grid: too many dimensions")
 
         return result

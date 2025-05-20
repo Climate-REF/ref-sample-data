@@ -21,6 +21,34 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.6.1 (2025-05-18)
+
+No significant changes.
+
+
+## ref-sample-data 0.6.0 (2025-05-16)
+
+No significant changes.
+
+
+## ref-sample-data 0.5.2 (2025-05-09)
+
+### Features
+
+- Add test data for each ILAMB/IOMB metric ([#31](https://github.com/CMIP-REF/ref-sample-data/pulls/31))
+
+
+## ref-sample-data 0.5.1 (2025-05-07)
+
+### Features
+
+- Added sample data for cloud radiative effects diagnostic. ([#29](https://github.com/CMIP-REF/ref-sample-data/pulls/29))
+
+### Improvements
+
+- Increased the width of the console output to make it easier to diagnose issues. ([#32](https://github.com/CMIP-REF/ref-sample-data/pulls/32))
+
+
 ## ref-sample-data 0.5.0 (2025-04-28)
 
 ### Features

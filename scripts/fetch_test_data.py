@@ -133,7 +133,7 @@ def process_sample_data_request(
 
 
 DATASETS_TO_FETCH = [
-    # Example metric data
+    # # Example metric data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
@@ -187,6 +187,17 @@ DATASETS_TO_FETCH = [
         ),
         remove_ensembles=False,
         time_span=("2007", "2015"),
+    ),
+    # ESMValTool Cloud radiative effects
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "rlut", "rlutcs", "rsut", "rsutcs"],
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("2005", "2014"),
     ),
     # ESMValTool ECS data
     CMIP6Request(
@@ -258,7 +269,29 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "sftlf", "gpp", "pr"],
+            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2000", "2025"),
+    ),
+    # ILAMB data, nbp requires a longer time span
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["nbp"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "2015"),
+    ),
+    # IOMB data
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacello", "sftof", "tos", "sos", "msftmz"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
@@ -276,18 +309,18 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2000", "2025"),
     ),
-    # Obs4MIPs AIRS data
-    Obs4MIPsRequest(
-        facets=dict(
-            project="obs4MIPs",
-            institution_id="NASA-JPL",
-            frequency="mon",
-            source_id="AIRS-2-1",
-            variable_id="ta",
-        ),
-        remove_ensembles=False,
-        time_span=("2002", "2016"),
-    ),
+    # # Obs4MIPs AIRS data
+    # Obs4MIPsRequest(
+    #     facets=dict(
+    #         project="obs4MIPs",
+    #         institution_id="NASA-JPL",
+    #         frequency="mon",
+    #         source_id="AIRS-2-1",
+    #         variable_id="ta",
+    #     ),
+    #     remove_ensembles=False,
+    #     time_span=("2002", "2016"),
+    # ),
     # All unpublished obs4mips datasets
     Obs4REFRequest(),
 ]

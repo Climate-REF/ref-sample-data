@@ -11,6 +11,7 @@ runs:
       shell: bash
       env:
         QUIET: true
+        COLUMNS: 160
       run: |
         git config --global user.name "$GITHUB_ACTOR"
         git config --global user.email "$CI_COMMIT_EMAIL"
