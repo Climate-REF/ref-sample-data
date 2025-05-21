@@ -5,19 +5,19 @@ import xesmf
 
 
 def _calculate_2d_cell_bounds(
-    dimension: xr.DataArray,
+    points: np.ndarray,
     i: int,
     j: int,
 ) -> list[float]:
-    cell_center = dimension[j, i].data
+    cell_center = points[j, i]
     if i == 0:
-        di = dimension[j, i + 1].data - cell_center
+        di = points[j, i + 1] - cell_center
     else:
-        di = cell_center - dimension[j, i - 1].data
+        di = cell_center - points[j, i - 1]
     if j == 0:
-        dj = dimension[j + 1, i].data - cell_center
+        dj = points[j + 1, i] - cell_center
     else:
-        dj = cell_center - dimension[j - 1, i].data
+        dj = cell_center - points[j - 1, i]
 
     return np.asarray(
         [
@@ -81,13 +81,15 @@ def decimate_curvilinear(dataset: xr.Dataset, factor: int = 10) -> xr.Dataset:
     """
     assert factor >= 1
     result = dataset.interp(i=dataset.i[::factor]).interp(j=dataset.j[::factor])
-    result.coords["i"].values[:] = range(len(result.i))
-    result.coords["j"].values[:] = range(len(result.j))
+    result.coords["i"].values[:] = np.arange(len(result.i))
+    result.coords["j"].values[:] = np.arange(len(result.j))
 
     # Update the bounds of the cells
+    latitude_points = result.latitude.values
+    longitude_points = result.longitude.values
     for j in result.j:
         for i in result.i:
-            result.vertices_latitude[j, i] = _calculate_2d_cell_bounds(result.latitude, i, j)
-            result.vertices_longitude[j, i] = _calculate_2d_cell_bounds(result.longitude, i, j)
+            result.vertices_latitude[j, i] = _calculate_2d_cell_bounds(latitude_points, i, j)
+            result.vertices_longitude[j, i] = _calculate_2d_cell_bounds(longitude_points, i, j)
 
     return result

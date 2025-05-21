@@ -26,6 +26,7 @@ typer = ">=0.15.4,<0.16"
 xcdat = ">=0.8.0,<0.9"
 xesmf = ">=0.8.7,<0.9"
 "ruamel.yaml" = ">=0.18.10,<0.19"
+distributed = ">=2025.5.1,<2026"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here

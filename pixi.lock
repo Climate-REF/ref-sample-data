@@ -55,11 +55,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/cycler-0.12.1-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cyrus-sasl-2.1.27-h54b06d7_7.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/cytoolz-1.0.1-py312h66e93f0_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/dbus-1.13.6-h5008d03_3.tar.bz2
       - conda: https://conda.anaconda.org/conda-forge/noarch/distlib-0.3.9-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/double-conversion-3.3.1-h5888daf_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/esmf-8.8.1-nompi_hc4cf7a7_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/esmpy-8.8.1-pyhecae5ae_0.conda
@@ -315,7 +315,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/41/18/d89a443ed1ab9bcda16264716f809c663866d4ca8de218aa78fd50b38ead/alembic-1.15.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
+      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
       - pypi: https://files.pythonhosted.org/packages/1e/f0/ffbef480ac51477053c46d2e59b26499948f8c309bc289122f7c5fa58dab/climate_ref_core-0.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/79/13/13576941bf7cf95026abae43d8427c812c0054408212bf8ed490eda846b0/crc32c-2.7.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -381,10 +381,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/cryptography-44.0.3-py313h54e0d97_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/cycler-0.12.1-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/cytoolz-1.0.1-py313h90d716c_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/distlib-0.3.9-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/esmf-8.8.1-nompi_h51c9b8f_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/esmpy-8.8.1-pyhecae5ae_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/exceptiongroup-1.3.0-pyhd8ed1ab_0.conda
@@ -576,7 +576,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/41/18/d89a443ed1ab9bcda16264716f809c663866d4ca8de218aa78fd50b38ead/alembic-1.15.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
+      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
       - pypi: https://files.pythonhosted.org/packages/1e/f0/ffbef480ac51477053c46d2e59b26499948f8c309bc289122f7c5fa58dab/climate_ref_core-0.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/47/02/2bd65fdef10139b6a802d83a7f966b7750fe5ffb1042f7cbe5dbb6403869/crc32c-2.7.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -637,10 +637,10 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/win-64/cryptography-44.0.3-py313h9d39bda_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/cycler-0.12.1-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/cytoolz-1.0.1-py313ha7868ed_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.1-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/distlib-0.3.9-pyhd8ed1ab_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.1-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/double-conversion-3.3.1-he0c23c2_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/esmf-8.4.2-nompi_hee46c9f_3.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/esmpy-8.4.2-pyhc1e730c_4.conda
@@ -851,7 +851,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/41/18/d89a443ed1ab9bcda16264716f809c663866d4ca8de218aa78fd50b38ead/alembic-1.15.2-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/3c/ee/d68a3de23867a9156bab7e0a22fb9a0305067ee639032a22982cf7f725e7/cattrs-24.1.3-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
+      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
       - pypi: https://files.pythonhosted.org/packages/1e/f0/ffbef480ac51477053c46d2e59b26499948f8c309bc289122f7c5fa58dab/climate_ref_core-0.5.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/db/a0/f01ccfab538db07ef3f6b4ede46357ff147a81dd4f3c59ca6a34c791a549/crc32c-2.7.1-cp313-cp313-win_amd64.whl
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
@@ -2260,7 +2260,7 @@ packages:
   - pkg:pypi/click?source=hash-mapping
   size: 85169
   timestamp: 1734858972635
-- pypi: git+https://github.com/Climate-REF/climate-ref@edd74675376e82b2fd5d906e81170e142e8dfbdd#subdirectory=packages/climate-ref
+- pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&rev=edd74675376e82b2fd5d906e81170e142e8dfbdd#edd74675376e82b2fd5d906e81170e142e8dfbdd
   name: climate-ref
   version: 0.5.2
   requires_dist:
@@ -2509,14 +2509,14 @@ packages:
   - pkg:pypi/cytoolz?source=hash-mapping
   size: 315372
   timestamp: 1734107736055
-- conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.0-pyhd8ed1ab_0.conda
-  sha256: 8b315094765103d10b23668381ee1b758f691c1ebc72f80cdf106e61e2809f6c
-  md5: f196a035f5f9848d8cb7b8b1654b95fa
+- conda: https://conda.anaconda.org/conda-forge/noarch/dask-2025.5.1-pyhd8ed1ab_0.conda
+  sha256: 6c01513d621c492fb414f8c498bcd84c649025ed159f3042378101822f17c22b
+  md5: 97ee3885b8de1d729c40f28c2dddb335
   depends:
   - bokeh >=3.1.0
   - cytoolz >=0.11.0
-  - dask-core >=2025.5.0,<2025.5.1.0a0
-  - distributed >=2025.5.0,<2025.5.1.0a0
+  - dask-core >=2025.5.1,<2025.5.2.0a0
+  - distributed >=2025.5.1,<2025.5.2.0a0
   - jinja2 >=2.10.3
   - lz4 >=4.3.2
   - numpy >=1.24
@@ -2526,13 +2526,12 @@ packages:
   constrains:
   - openssl !=1.1.1e
   license: BSD-3-Clause
-  license_family: BSD
   purls: []
-  size: 8013
-  timestamp: 1747188107517
-- conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.0-pyhd8ed1ab_0.conda
-  sha256: de979b0d774f4e8a88d4d733f5278789dddc66f5597fb4d2d92de8208e06a05f
-  md5: 69bab6d290b49ccb24104515508ee4d0
+  size: 8024
+  timestamp: 1747777430676
+- conda: https://conda.anaconda.org/conda-forge/noarch/dask-core-2025.5.1-pyhd8ed1ab_0.conda
+  sha256: 993fe9ff727441c57fab9969c61eb04eeca2ca82cce432804798f258177ab419
+  md5: 8f0ef561cd615a17df3256742a3457c4
   depends:
   - click >=8.1
   - cloudpickle >=3.0.0
@@ -2544,11 +2543,10 @@ packages:
   - pyyaml >=5.3.1
   - toolz >=0.10.0
   license: BSD-3-Clause
-  license_family: BSD
   purls:
   - pkg:pypi/dask?source=hash-mapping
-  size: 993417
-  timestamp: 1747175569693
+  size: 993940
+  timestamp: 1747771723761
 - conda: https://conda.anaconda.org/conda-forge/linux-64/dbus-1.13.6-h5008d03_3.tar.bz2
   sha256: 8f5f995699a2d9dbdd62c61385bfeeb57c82a681a7c8c5313c395aa0ccab68a5
   md5: ecfff944ba3960ecb334b9a2663d708d
@@ -2572,14 +2570,14 @@ packages:
   - pkg:pypi/distlib?source=hash-mapping
   size: 274151
   timestamp: 1733238487461
-- conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.0-pyhd8ed1ab_0.conda
-  sha256: aeedbeaadac6fa9d0aee6912879021324ee778a105cc45e1da54656f7c249d0d
-  md5: 52003077e67666a32819b242f423de89
+- conda: https://conda.anaconda.org/conda-forge/noarch/distributed-2025.5.1-pyhd8ed1ab_0.conda
+  sha256: fc550701d648ba791f271068a792788047850bfd23ed082beb5317bb7d77a099
+  md5: d2949f56a1479507e36e847681903376
   depends:
   - click >=8.0
   - cloudpickle >=3.0.0
   - cytoolz >=0.11.2
-  - dask-core >=2025.5.0,<2025.5.1.0a0
+  - dask-core >=2025.5.1,<2025.5.2.0a0
   - jinja2 >=2.10.3
   - locket >=1.0.0
   - msgpack-python >=1.0.2
@@ -2599,8 +2597,8 @@ packages:
   license_family: BSD
   purls:
   - pkg:pypi/distributed?source=hash-mapping
-  size: 800275
-  timestamp: 1747183399372
+  size: 799649
+  timestamp: 1747775449784
 - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
   name: donfig
   version: 0.8.1.post1
@@ -8352,7 +8350,7 @@ packages:
 - pypi: .
   name: ref-sample-data
   version: 0.6.1
-  sha256: 8d1a55bf766748da01ea07c1d3b46fcfffb0c651360b350b03ce45d7fd24d4e1
+  sha256: a9758b596aa7f8c138687903b397dd38f1c5915ef2a67fa86fb3f62636f551ff
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/requests-2.32.3-pyhd8ed1ab_1.conda

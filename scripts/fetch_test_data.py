@@ -1,6 +1,7 @@
 import pathlib
 from pathlib import Path
 
+import distributed
 import pandas as pd
 import pooch
 import typer
@@ -44,6 +45,7 @@ def process_sample_data_request(
     request: DataRequest,
     decimate: bool,
     output_directory: Path,
+    client: distributed.Client,
 ) -> pd.DataFrame:
     """
     Fetch and create sample datasets
@@ -67,6 +69,7 @@ def process_sample_data_request(
     """
     datasets = request.fetch_datasets()
     items = []
+    delayeds = []
 
     for _, dataset in datasets.iterrows():
         match = _get_match(processed_datasets, request.source_type, dataset.key)
@@ -111,8 +114,12 @@ def process_sample_data_request(
 
             output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
             output_filename.parent.mkdir(parents=True, exist_ok=True)
-            logger.info(f"Saving {ds_filename} to {output_filename}")
-            ds_decimated.to_netcdf(output_filename)
+            logger.info(
+                "Creating {output_filename} from {input_filename}",
+                output_filename=output_filename,
+                input_filename=ds_filename,
+            )
+            delayeds.append(ds_decimated.to_netcdf(output_filename, compute=False))
             output_filenames.append(output_filename)
 
         item = {
@@ -126,6 +133,9 @@ def process_sample_data_request(
 
         items.append(item)
 
+    logger.info("Computing and saving datasets to disk")
+    client.compute(delayeds, sync=True)
+
     # Regenerate the registry.txt file
     logger.info("Making registry")
     pooch.make_registry(str(OUTPUT_PATH), "registry.txt")
@@ -133,7 +143,7 @@ def process_sample_data_request(
 
 
 DATASETS_TO_FETCH = [
-    # # Example metric data
+    # Example metric data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
@@ -309,47 +319,60 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2000", "2025"),
     ),
-    # # Obs4MIPs AIRS data
-    # Obs4MIPsRequest(
-    #     facets=dict(
-    #         project="obs4MIPs",
-    #         institution_id="NASA-JPL",
-    #         frequency="mon",
-    #         source_id="AIRS-2-1",
-    #         variable_id="ta",
-    #     ),
-    #     remove_ensembles=False,
-    #     time_span=("2002", "2016"),
-    # ),
+    # Obs4MIPs AIRS data
+    Obs4MIPsRequest(
+        facets=dict(
+            project="obs4MIPs",
+            institution_id="NASA-JPL",
+            frequency="mon",
+            source_id="AIRS-2-1",
+            variable_id="ta",
+        ),
+        remove_ensembles=False,
+        time_span=("2002", "2016"),
+    ),
     # All unpublished obs4mips datasets
     Obs4REFRequest(),
 ]
 
 
 @app.command()
-def create_sample_data(
+def create_sample_data(  # noqa: PLR0913
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
     log_level: str = "INFO",
+    num_workers: int = 1,
+    threads_per_worker: int = 1,
+    memory_per_worker: str = "2GiB",
 ) -> None:
     """Fetch and create sample datasets"""
     logger.level(log_level)
+    logger.info("Creating sample datasets")
+
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
-    for dataset_requested in DATASETS_TO_FETCH:
-        # Process the request
-        new_datasets = process_sample_data_request(
-            processed_datasets,
-            dataset_requested,
-            decimate=decimate,
-            output_directory=pathlib.Path(output),
-        )
-        # Remove duplicate source_type and key values, but keep the latest one
-        processed_datasets = (
-            pd.concat([processed_datasets, new_datasets], ignore_index=True)
-            .drop_duplicates(subset=["source_type", "key"], keep="last")
-            .reset_index(drop=True)
-        )
+    with distributed.Client(
+        n_workers=num_workers,
+        threads_per_worker=threads_per_worker,
+        memory_limit=memory_per_worker,
+    ) as client:
+        logger.info("View the Dask dashboard at: {client.dashboard_link}", client=client)
+        for dataset_requested in DATASETS_TO_FETCH:
+            # Process the request
+            new_datasets = process_sample_data_request(
+                processed_datasets,
+                dataset_requested,
+                decimate=decimate,
+                output_directory=pathlib.Path(output),
+                client=client,
+            )
+            # Remove duplicate source_type and key values, but keep the latest one
+            processed_datasets = (
+                pd.concat([processed_datasets, new_datasets], ignore_index=True)
+                .drop_duplicates(subset=["source_type", "key"], keep="last")
+                .reset_index(drop=True)
+            )
+    logger.info("Sample datasets created successfully")
 
 
 if __name__ == "__main__":
