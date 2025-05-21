@@ -8,7 +8,7 @@ def _calculate_2d_cell_bounds(
     dimension: xr.DataArray,
     i: int,
     j: int,
-) -> [float, float, float, float]:
+) -> list[float]:
     cell_center = dimension[j, i].data
     if i == 0:
         di = dimension[j, i + 1].data - cell_center
@@ -46,7 +46,7 @@ def decimate_rectilinear(dataset: xr.Dataset) -> xr.Dataset:
     # 10x10 degree grid
     output_grid = xcdat.create_uniform_grid(-90, 90, 10, 0, 359, 10)
     regrid = xesmf.Regridder(dataset, output_grid, "bilinear")
-    result = regrid(dataset)
+    result = regrid(dataset.copy())
     result = result.bounds.add_bounds("Y").bounds.add_bounds("X")
     # Restore attributes and add dataarrays that have not been regridded.
     for k, v in dataset.data_vars.items():
@@ -54,6 +54,8 @@ def decimate_rectilinear(dataset: xr.Dataset) -> xr.Dataset:
             result[k].attrs = v.attrs
         else:
             result[k] = v
+    for k, v in dataset.coords.items():
+        result[k].attrs = v.attrs
     result.attrs = dataset.attrs
     return result
 
