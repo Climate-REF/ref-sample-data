@@ -175,6 +175,21 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("0101", "0125"),
     ),
+    # ESMValTool ENSO basic climatology data
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=[
+                "pr",
+                "tos",
+                "tauu",
+            ],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "2014"),
+    ),
     # ESMValTool TCR data
     CMIP6Request(
         facets=dict(
