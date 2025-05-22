@@ -234,7 +234,7 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai"],
+            variable_id=["areacella", "sftlf", "gpp", "pr", "tas", "mrro", "mrsos", "cSoil", "lai", "snc"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
@@ -256,11 +256,21 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacello", "sftof", "tos", "sos", "msftmz"],
+            variable_id=["areacello", "sftof", "tos", "sos", "msftmz", "thetao"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
         time_span=("2000", "2025"),
+    ),
+    # Sometimes models have time-dependent volcello
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            table_id="Ofx",
+            variable_id=["volcello"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
     ),
     # PMP modes of variability data
     CMIP6Request(
