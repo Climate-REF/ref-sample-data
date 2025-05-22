@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 import pathlib
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import distributed
 import pandas as pd
@@ -7,6 +10,10 @@ import pooch
 import typer
 import xarray as xr
 from loguru import logger
+
+if TYPE_CHECKING:
+    from dask.delayed import Delayed
+
 
 from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest, Obs4REFRequest
 
@@ -38,6 +45,57 @@ def _get_match(dataset: pd.DataFrame, source_type: str, key: str) -> pd.Series |
     if len(matches) == 0:
         return None
     return matches.iloc[0]
+
+
+def _open_dataset(filename: str) -> xr.Dataset:
+    """
+    Open a dataset from a file
+
+    Parameters
+    ----------
+    filename
+        The filename to open
+
+    Returns
+    -------
+        The opened dataset
+    """
+    try:
+        ds = xr.open_dataset(filename, chunks="auto")
+    except NotImplementedError:
+        # This is a workaround for being unable to use "auto" chunking
+        # with arrays of type "object", i.e. time_bnds of type cftime.datetime.
+        ds = xr.open_dataset(filename, chunks={})
+        var_name = ds.attrs.get("variable_id")
+        if var_name in ds.data_vars:
+            chunks = {
+                dim: chunks for dim, chunks in zip(ds[var_name].dims, ds[var_name].chunk("auto").chunks)
+            }
+            ds = xr.open_dataset(filename, chunks=chunks)
+    return ds
+
+
+def _save_dataset(
+    dataset: xr.Dataset,
+    filename: Path,
+) -> Delayed:
+    """
+    Save a dataset to a file
+
+    Parameters
+    ----------
+    dataset
+        The dataset to save
+    filename
+        The filename to save the dataset to
+
+    Returns
+    -------
+        The delayed result of saving the dataset
+    """
+    filename.parent.mkdir(parents=True, exist_ok=True)
+    logger.info("Creating {output_filename}", output_filename=filename)
+    return dataset.to_netcdf(filename, compute=False)
 
 
 def process_sample_data_request(
@@ -103,7 +161,7 @@ def process_sample_data_request(
 
         output_filenames = []
         for ds_filename in sorted(dataset["files"]):
-            ds_orig = xr.open_dataset(ds_filename, chunks={})
+            ds_orig = _open_dataset(ds_filename)
 
             if decimate:
                 ds_decimated = request.decimate_dataset(ds_orig)
@@ -113,13 +171,13 @@ def process_sample_data_request(
                 continue
 
             output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
-            output_filename.parent.mkdir(parents=True, exist_ok=True)
             logger.info(
                 "Creating {output_filename} from {input_filename}",
                 output_filename=output_filename,
                 input_filename=ds_filename,
             )
-            delayeds.append(ds_decimated.to_netcdf(output_filename, compute=False))
+            result = _save_dataset(ds_decimated, output_filename)
+            delayeds.append(result)
             output_filenames.append(output_filename)
 
         item = {
@@ -319,18 +377,18 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2000", "2025"),
     ),
-    # Obs4MIPs AIRS data
-    Obs4MIPsRequest(
-        facets=dict(
-            project="obs4MIPs",
-            institution_id="NASA-JPL",
-            frequency="mon",
-            source_id="AIRS-2-1",
-            variable_id="ta",
-        ),
-        remove_ensembles=False,
-        time_span=("2002", "2016"),
-    ),
+    # # Obs4MIPs AIRS data
+    # Obs4MIPsRequest(
+    #     facets=dict(
+    #         project="obs4MIPs",
+    #         institution_id="NASA-JPL",
+    #         frequency="mon",
+    #         source_id="AIRS-2-1",
+    #         variable_id="ta",
+    #     ),
+    #     remove_ensembles=False,
+    #     time_span=("2002", "2016"),
+    # ),
     # All unpublished obs4mips datasets
     Obs4REFRequest(),
 ]
