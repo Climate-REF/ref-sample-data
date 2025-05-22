@@ -80,7 +80,11 @@ class IntakeESGFDataRequest(DataRequest):
         """Fetch the datasets from the ESGF."""
         cat = ESGFCatalog()
 
-        cat.search(**self.facets)
+        opts = {}
+        if self.time_span:
+            opts["file_start"] = self.time_span[0]
+            opts["file_end"] = self.time_span[1]
+        cat.search(**(opts | self.facets))
         if self.remove_ensembles:
             cat.remove_ensembles()
 
