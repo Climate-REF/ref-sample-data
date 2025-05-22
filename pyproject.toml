@@ -16,7 +16,7 @@ platforms = ["osx-arm64", "linux-64", "win-64"]
 [tool.pixi.dependencies]
 python = ">=3.10"
 pooch = ">=1.8.2,<2"
-intake-esgf = ">=2025.5.22,<2026"
+intake-esgf = ">=2025.5.23,<2026"
 matplotlib = ">=3.10.3,<4"
 scipy = ">=1.15.2,<2"
 xarray = ">=2025.1.0,<2025.2"
