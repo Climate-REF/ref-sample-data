@@ -269,6 +269,7 @@ DATASETS_TO_FETCH = [
             table_id="Ofx",
             variable_id=["volcello"],
             experiment_id=["historical"],
+            time_span=("2000", "2025"),
         ),
         remove_ensembles=True,
     ),
