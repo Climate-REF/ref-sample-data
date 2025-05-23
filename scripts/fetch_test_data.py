@@ -278,6 +278,22 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("0101", "0125"),
     ),
+    # ESMValTool ENSO data
+    CMIP6Request(
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=[
+                "areacello",
+                "pr",
+                "tos",
+                "tauu",
+            ],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1850", "2014"),
+    ),
     # ESMValTool TCR data
     CMIP6Request(
         facets=dict(
@@ -355,11 +371,21 @@ DATASETS_TO_FETCH = [
         time_span=("1850", "2015"),
     ),
     # IOMB data
+    CMIP6Request(  # Already provided by the ESMValTool ENSO request.
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=["areacello", "tos"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2000", "2025"),
+    ),
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacello", "sftof", "tos", "sos", "msftmz"],
+            variable_id=["sftof", "sos", "msftmz"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
