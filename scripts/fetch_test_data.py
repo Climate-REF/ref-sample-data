@@ -131,7 +131,7 @@ def process_sample_data_request(
 
 
 DATASETS_TO_FETCH = [
-    # # Example metric data
+    # Example metric data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
@@ -175,12 +175,13 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("0101", "0125"),
     ),
-    # ESMValTool ENSO basic climatology data
+    # ESMValTool ENSO data
     CMIP6Request(
         facets=dict(
             source_id="ACCESS-ESM1-5",
-            frequency=["mon"],
+            frequency=["fx", "mon"],
             variable_id=[
+                "areacello",
                 "pr",
                 "tos",
                 "tauu",
