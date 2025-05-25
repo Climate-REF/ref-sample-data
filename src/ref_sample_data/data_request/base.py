@@ -78,11 +78,22 @@ class IntakeESGFDataRequest(DataRequest):
 
     def fetch_datasets(self) -> pd.DataFrame:
         """Fetch the datasets from the ESGF."""
-        # Enable the index holding obs4MIPs records.
-        intake_esgf.conf.set(indices={"esgf-node.llnl.gov": True})
+        # Enable two indices with distrib search for finding obs4MIPs records.
+        intake_esgf.conf.set(
+            indices={
+                "esg-dn1.nsc.liu.se": True,
+                "esgf-data.dkrz.de": True,
+            }
+        )
         cat = intake_esgf.ESGFCatalog()
+        for index in cat.indices:
+            index.distrib = True
 
-        cat.search(**self.facets)
+        opts = {}
+        if self.time_span:
+            opts["file_start"] = self.time_span[0]
+            opts["file_end"] = self.time_span[1]
+        cat.search(**(opts | self.facets))
         if self.remove_ensembles:
             cat.remove_ensembles()
 
