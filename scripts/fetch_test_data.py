@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from dask.delayed import Delayed
 
 
-from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest, Obs4REFRequest
+from ref_sample_data import CMIP6Request, DataRequest, Obs4REFRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
@@ -246,16 +246,18 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("2007", "2014"),
     ),
-    Obs4MIPsRequest(
-        facets=dict(
-            project="obs4MIPs",
-            source_id="ERA-5",
-            frequency="mon",
-            variable_id="ta",
-        ),
-        remove_ensembles=False,
-        time_span=("2007", "2015"),
-    ),
+    # The dataset below has been copied to obs4REF because the only fileserver
+    # that holds the data is offline.
+    # Obs4MIPsRequest(
+    #     facets=dict(
+    #         project="obs4MIPs",
+    #         source_id="ERA-5",
+    #         frequency="mon",
+    #         variable_id="ta",
+    #     ),
+    #     remove_ensembles=False,
+    #     time_span=("2007", "2015"),
+    # ),
     # ESMValTool Cloud radiative effects
     CMIP6Request(
         facets=dict(
