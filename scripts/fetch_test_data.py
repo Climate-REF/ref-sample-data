@@ -256,12 +256,12 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("2000", "2025"),
     ),
-    # ILAMB data, but a model that has a fire model
+    # ILAMB data, but a model that has a fire and snow model
     CMIP6Request(
         facets=dict(
             source_id="CESM2",
             frequency=["mon"],
-            variable_id=["burntFractionAll"],
+            variable_id=["areacella", "burntFractionAll", "snc"],
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
