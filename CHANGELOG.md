@@ -23,13 +23,18 @@ from the examples given in that link.
 
 ## ref-sample-data 0.6.1 (2025-05-18)
 
-No significant changes.
+### Features
+
+- Add burntFractionAll ([#40](https://github.com/CMIP-REF/ref-sample-data/pulls/40))
 
 
 ## ref-sample-data 0.6.0 (2025-05-16)
 
-No significant changes.
+### Features
 
+- Update the obs4REF archive ([#34](https://github.com/CMIP-REF/ref-sample-data/pulls/34))
+- select a longer time span for nbp ([#35](https://github.com/CMIP-REF/ref-sample-data/pulls/35))
+- Added sample data for ESMValTool ENSO diagnostics. ([#37](https://github.com/CMIP-REF/ref-sample-data/pulls/37))
 
 ## ref-sample-data 0.5.2 (2025-05-09)
 
