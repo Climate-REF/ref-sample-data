@@ -53,6 +53,9 @@ CMIP6/CMIP/MPI-M/MPI-ESM1-2-LR/esm-piControl/r1i1p1f1/Amon/tas/gn/v20190815/tas_
 CMIP6/CMIP/MPI-M/MPI-ESM1-2-LR/esm-piControl/r1i1p1f1/Amon/tas/gn/v20190815/tas_Amon_MPI-ESM1-2-LR_esm-piControl_r1i1p1f1_gn_189001-190912.nc ae9193e06aec8a7f63f2f7ec63fec9d25b2c1dc5de2bbe7065428c722090f45c
 CMIP6/CMIP/MPI-M/MPI-ESM1-2-LR/esm-piControl/r1i1p1f1/Amon/tas/gn/v20190815/tas_Amon_MPI-ESM1-2-LR_esm-piControl_r1i1p1f1_gn_191001-191512.nc 2113b7d4a781c7c28de55b0ffe99c42b49692d113f5109e7a4d0214211a9eb1c
 CMIP6/CMIP/MPI-M/MPI-ESM1-2-LR/esm-piControl/r1i1p1f1/fx/areacella/gn/v20190815/areacella_fx_MPI-ESM1-2-LR_esm-piControl_r1i1p1f1_gn.nc 2f5595635a566d5b4a889468f687aabf99ca5cdadb11f6a770d05d09775bfabb
+CMIP6/CMIP/NCAR/CESM2/historical/r1i1p1f1/ImonAnt/snc/gn/v20190308/snc_ImonAnt_CESM2_historical_r1i1p1f1_gn_200001-201412.nc 5a88cd5ed6ed33f9b24fd4bf942b5e427cb3512584a38030b07feb158c7a78c2
+CMIP6/CMIP/NCAR/CESM2/historical/r1i1p1f1/ImonGre/snc/gn/v20190308/snc_ImonGre_CESM2_historical_r1i1p1f1_gn_200001-201412.nc 5f6b6ccb2450eeeebc3b24d3d76cf306894094efa2f6ee53403be89595f4455c
+CMIP6/CMIP/NCAR/CESM2/historical/r1i1p1f1/LImon/snc/gn/v20190308/snc_LImon_CESM2_historical_r1i1p1f1_gn_200001-201412.nc 27005c5952a981c27c17ad8d169d01c852e2daee3236adf1e170b6b96aafcfff
 CMIP6/CMIP/NCAR/CESM2/historical/r1i1p1f1/Lmon/burntFractionAll/gn/v20190308/burntFractionAll_Lmon_CESM2_historical_r1i1p1f1_gn_200001-201412.nc 61fbd29b05a5bdfa11001265c3960b5147e641148eff2a55cc027aa56db7263c
 CMIP6/DAMIP/CSIRO/ACCESS-ESM1-5/hist-GHG/r1i1p1f1/Amon/psl/gn/v20200615/psl_Amon_ACCESS-ESM1-5_hist-GHG_r1i1p1f1_gn_200001-202012.nc 5fed6b48717fcf508e8b5936be304db0346362c2182c5d13a141afe7c982021a
 CMIP6/DAMIP/CSIRO/ACCESS-ESM1-5/hist-GHG/r1i1p1f1/Amon/ts/gn/v20200615/ts_Amon_ACCESS-ESM1-5_hist-GHG_r1i1p1f1_gn_200001-202012.nc aa98fa93ef29ea266a94d87876b4ae08917caf77e38c5df1eae1ec98a5f559cb
