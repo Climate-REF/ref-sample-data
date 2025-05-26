@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.6.3 (2025-05-26)
+
+### Features
+
+- Add snc from CESM2 ([#41](https://github.com/CMIP-REF/ref-sample-data/pulls/41))
+
+
 ## ref-sample-data 0.6.1 (2025-05-18)
 
 ### Features
