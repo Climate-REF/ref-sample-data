@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import datetime
 import pathlib
+import time
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -11,9 +13,7 @@ import typer
 import xarray as xr
 from loguru import logger
 
-from ref_sample_data.data_request.base import DataRequest
-from ref_sample_data.data_request.cmip6 import CMIP6Request
-from ref_sample_data.data_request.obs4ref import Obs4REFRequest
+from ref_sample_data import CMIP6Request, DataRequest, Obs4REFRequest
 
 if TYPE_CHECKING:
     from dask.delayed import Delayed
@@ -109,12 +109,13 @@ def _save_dataset(
     return dataset.to_netcdf(filename, encoding=encoding, compute=False)
 
 
-def process_sample_data_request(
+def process_sample_data_request(  # noqa: PLR0913
     processed_datasets: pd.DataFrame,
     request: DataRequest,
     decimate: bool,
     output_directory: Path,
     client: distributed.Client,
+    stats: dict[str, float],
 ) -> pd.DataFrame:
     """
     Fetch and create sample datasets
@@ -136,10 +137,14 @@ def process_sample_data_request(
     -------
         The processed datasets from this request
     """
+    start_time = time.perf_counter()
     datasets = request.fetch_datasets()
+    stats["download"] += time.perf_counter() - start_time
+
     items = []
     delayeds = []
 
+    start_time = time.perf_counter()
     for _, dataset in datasets.iterrows():
         match = _get_match(processed_datasets, request.source_type, dataset.key)
 
@@ -201,9 +206,12 @@ def process_sample_data_request(
             item["time_end"] = request.time_span[1]
 
         items.append(item)
+    stats["decimate"] += time.perf_counter() - start_time
 
     logger.info("Computing and saving datasets to disk")
+    start_time = time.perf_counter()
     client.compute(delayeds, sync=True)
+    stats["compute"] += time.perf_counter() - start_time
 
     # Regenerate the registry.txt file
     logger.info("Making registry")
@@ -459,6 +467,12 @@ def create_sample_data(  # noqa: PLR0913
 
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
+    stats = {
+        "download": 0.0,
+        "decimate": 0.0,
+        "compute": 0.0,
+    }
+
     with distributed.Client(
         n_workers=num_workers,
         threads_per_worker=threads_per_worker,
@@ -473,6 +487,7 @@ def create_sample_data(  # noqa: PLR0913
                 decimate=decimate,
                 output_directory=pathlib.Path(output),
                 client=client,
+                stats=stats,
             )
             # Remove duplicate source_type and key values, but keep the latest one
             processed_datasets = (
@@ -480,6 +495,8 @@ def create_sample_data(  # noqa: PLR0913
                 .drop_duplicates(subset=["source_type", "key"], keep="last")
                 .reset_index(drop=True)
             )
+    for step, duration in stats.items():
+        logger.info(f"{step.capitalize()} took {datetime.timedelta(seconds=duration)}")
     logger.info("Sample datasets created successfully")
 
 
