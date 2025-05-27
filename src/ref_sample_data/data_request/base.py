@@ -82,15 +82,15 @@ class IntakeESGFMixin:
     def fetch_datasets(self) -> pd.DataFrame:
         """Fetch the datasets from the ESGF."""
         # Enable two indices with distrib search for finding obs4MIPs records.
-        intake_esgf.conf.set(
-            indices={
-                "esg-dn1.nsc.liu.se": True,
-                "esgf-data.dkrz.de": True,
-            }
-        )
+        # intake_esgf.conf.set(
+        #     indices={
+        #         "esg-dn1.nsc.liu.se": True,
+        #         "esgf-data.dkrz.de": True,
+        #     }
+        # )
         cat = intake_esgf.ESGFCatalog()
-        for index in cat.indices:
-            index.distrib = True
+        # for index in cat.indices:
+        #     index.distrib = True
 
         opts = {}
         if self.time_span:
