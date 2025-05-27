@@ -97,16 +97,20 @@ def _save_dataset(
     """
     filename.parent.mkdir(parents=True, exist_ok=True)
     logger.info("Creating {output_filename}", output_filename=filename)
-    encoding = {
-        var: {
-            "zlib": True,
-            "significant_digits": 5,
-            "quantize_mode": "GranularBitRound",
-        }
-        for var in dataset.data_vars
-        if var == dataset.attrs.get("variable_id")
-    }
-    return dataset.to_netcdf(filename, encoding=encoding, compute=False)
+    # encoding = {
+    #     var: {
+    #         "zlib": True,
+    #         "significant_digits": 5,
+    #         "quantize_mode": "GranularBitRound",
+    #     }
+    #     for var in dataset.data_vars
+    #     if var == dataset.attrs.get("variable_id")
+    # }
+    return dataset.to_netcdf(
+        filename,
+        # encoding=encoding,
+        compute=False,
+    )
 
 
 def process_sample_data_request(  # noqa: PLR0913
