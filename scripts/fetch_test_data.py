@@ -11,13 +11,13 @@ import typer
 import xarray as xr
 from loguru import logger
 
+from ref_sample_data.data_request.base import DataRequest
 from ref_sample_data.data_request.cmip6 import CMIP6Request
+from ref_sample_data.data_request.obs4ref import Obs4REFRequest
 
 if TYPE_CHECKING:
     from dask.delayed import Delayed
 
-
-from ref_sample_data import DataRequest, Obs4REFRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
@@ -100,7 +100,7 @@ def _save_dataset(
     encoding = {
         var: {
             "zlib": True,
-            "significant_digits": True,
+            "significant_digits": 5,
             "quantize_mode": "GranularBitRound",
         }
         for var in dataset.data_vars
@@ -450,7 +450,7 @@ def create_sample_data(  # noqa: PLR0913
     output: Path = OUTPUT_PATH,
     log_level: str = "INFO",
     num_workers: int = 1,
-    threads_per_worker: int = 1,
+    threads_per_worker: int = 2,
     memory_per_worker: str = "2.5GiB",
 ) -> None:
     """Fetch and create sample datasets"""
