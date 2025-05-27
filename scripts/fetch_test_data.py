@@ -11,11 +11,13 @@ import typer
 import xarray as xr
 from loguru import logger
 
+from ref_sample_data.data_request.cmip6 import CMIP6Request
+
 if TYPE_CHECKING:
     from dask.delayed import Delayed
 
 
-from ref_sample_data import CMIP6Request, DataRequest, Obs4REFRequest
+from ref_sample_data import DataRequest, Obs4REFRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
@@ -95,7 +97,16 @@ def _save_dataset(
     """
     filename.parent.mkdir(parents=True, exist_ok=True)
     logger.info("Creating {output_filename}", output_filename=filename)
-    return dataset.to_netcdf(filename, compute=False)
+    encoding = {
+        var: {
+            "zlib": True,
+            "significant_digits": True,
+            "quantize_mode": "GranularBitRound",
+        }
+        for var in dataset.data_vars
+        if var == dataset.attrs.get("variable_id")
+    }
+    return dataset.to_netcdf(filename, encoding=encoding, compute=False)
 
 
 def process_sample_data_request(
@@ -440,7 +451,7 @@ def create_sample_data(  # noqa: PLR0913
     log_level: str = "INFO",
     num_workers: int = 1,
     threads_per_worker: int = 1,
-    memory_per_worker: str = "2GiB",
+    memory_per_worker: str = "2.5GiB",
 ) -> None:
     """Fetch and create sample datasets"""
     logger.level(log_level)

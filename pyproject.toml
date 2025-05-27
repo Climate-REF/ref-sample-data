@@ -32,7 +32,8 @@ distributed = ">=2025.5.1,<2026"
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
 # TODO: Pin a release
-climate-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/climate-ref", rev = "edd74675376e82b2fd5d906e81170e142e8dfbdd" }
+climate-ref-core = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/climate-ref-core", rev = "e0aa88ebc1f245b30332e1748674670d9a29573e" }
+climate-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/climate-ref", rev = "e0aa88ebc1f245b30332e1748674670d9a29573e" }
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"

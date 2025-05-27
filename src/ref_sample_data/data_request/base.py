@@ -4,6 +4,9 @@ from typing import Protocol
 import intake_esgf
 import pandas as pd
 import xarray as xr
+from loguru import logger
+
+from ref_sample_data.resample import decimate_curvilinear, decimate_rectilinear
 
 
 class DataRequest(Protocol):
@@ -68,9 +71,9 @@ def _deduplicate_datasets(datasets: pd.DataFrame) -> pd.DataFrame:
     return datasets.groupby("key").apply(_deduplicate_group, include_groups=False).reset_index()
 
 
-class IntakeESGFDataRequest(DataRequest):
+class IntakeESGFMixin:
     """
-    A data request that fetches datasets from ESGF using intake-esgf.
+    A mixin that fetches datasets from ESGF using intake-esgf.
     """
 
     facets: dict[str, str | tuple[str, ...]]
@@ -103,3 +106,49 @@ class IntakeESGFDataRequest(DataRequest):
             merged_df["time_start"] = self.time_span[0]
             merged_df["time_end"] = self.time_span[1]
         return _deduplicate_datasets(merged_df)
+
+
+class DecimateMixin:
+    """
+    Mixin for decimating datasets based on their grid type.
+    """
+
+    def decimate_dataset(self, dataset: xr.Dataset) -> xr.Dataset | None:
+        """
+        Downscale the dataset to a smaller size.
+
+        Parameters
+        ----------
+        dataset
+            The dataset to downscale
+
+        Returns
+        -------
+        xr.Dataset
+            The downscaled dataset
+        """
+        if "time" in dataset.dims and self.time_span is not None:
+            result = dataset.sel(time=slice(*self.time_span))
+            if result.time.size == 0:
+                # The dataset does not contain data in the requested time range.
+                return None
+        else:
+            result = dataset.copy()
+
+        has_latlon = "lat" in result.dims and "lon" in result.dims
+        has_ij = "i" in result.dims and "j" in result.dims
+
+        if has_latlon:
+            assert len(result.lat.dims) == 1 and len(result.lon.dims) == 1
+
+            result = decimate_rectilinear(result)
+        elif has_ij:
+            # 2d curvilinear grid (generally ocean variables)
+            result = decimate_curvilinear(result)
+        else:
+            logger.debug(
+                "No algorithm implemented for this grid type, not spatially decimating dataset:\n{dataset}",
+                dataset=dataset,
+            )
+
+        return result

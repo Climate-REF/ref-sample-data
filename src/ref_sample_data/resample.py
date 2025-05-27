@@ -45,7 +45,7 @@ def decimate_rectilinear(dataset: xr.Dataset) -> xr.Dataset:
     # Decimate the dataset, but update the bounds
     # 10x10 degree grid
     output_grid = xcdat.create_uniform_grid(-90, 90, 10, 0, 359, 10)
-    regrid = xesmf.Regridder(dataset, output_grid, "bilinear")
+    regrid = xesmf.Regridder(dataset, output_grid, "bilinear", periodic=True)
     result = regrid(dataset.copy())
     result = result.bounds.add_bounds("Y").bounds.add_bounds("X")
     # Restore attributes and add dataarrays that have not been regridded.
