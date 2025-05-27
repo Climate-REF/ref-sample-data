@@ -6,7 +6,9 @@ import time
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-import distributed
+import dask
+
+# import distributed
 import pandas as pd
 import pooch
 import typer
@@ -113,12 +115,11 @@ def _save_dataset(
     )
 
 
-def process_sample_data_request(  # noqa: PLR0913
+def process_sample_data_request(
     processed_datasets: pd.DataFrame,
     request: DataRequest,
     decimate: bool,
     output_directory: Path,
-    client: distributed.Client,
     stats: dict[str, float],
 ) -> pd.DataFrame:
     """
@@ -214,7 +215,7 @@ def process_sample_data_request(  # noqa: PLR0913
 
     logger.info("Computing and saving datasets to disk")
     start_time = time.perf_counter()
-    client.compute(delayeds, sync=True)
+    dask.compute(delayeds)
     stats["compute"] += time.perf_counter() - start_time
 
     # Regenerate the registry.txt file
@@ -457,13 +458,13 @@ DATASETS_TO_FETCH = [
 
 
 @app.command()
-def create_sample_data(  # noqa: PLR0913
+def create_sample_data(
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
     log_level: str = "INFO",
     num_workers: int = 1,
-    threads_per_worker: int = 2,
-    memory_per_worker: str = "2.5GiB",
+    # threads_per_worker: int = 2,
+    # memory_per_worker: str = "2.5GiB",
 ) -> None:
     """Fetch and create sample datasets"""
     logger.level(log_level)
@@ -477,12 +478,13 @@ def create_sample_data(  # noqa: PLR0913
         "compute": 0.0,
     }
 
-    with distributed.Client(
-        n_workers=num_workers,
-        threads_per_worker=threads_per_worker,
-        memory_limit=memory_per_worker,
-    ) as client:
-        logger.info("View the Dask dashboard at: {client.dashboard_link}", client=client)
+    # with distributed.Client(
+    #     n_workers=num_workers,
+    #     threads_per_worker=threads_per_worker,
+    #     memory_limit=memory_per_worker,
+    # ) as client:
+    #     logger.info("View the Dask dashboard at: {client.dashboard_link}", client=client)
+    with dask.config.set(scheduler="synchronous"):
         for dataset_requested in DATASETS_TO_FETCH:
             # Process the request
             new_datasets = process_sample_data_request(
@@ -490,7 +492,6 @@ def create_sample_data(  # noqa: PLR0913
                 dataset_requested,
                 decimate=decimate,
                 output_directory=pathlib.Path(output),
-                client=client,
                 stats=stats,
             )
             # Remove duplicate source_type and key values, but keep the latest one
