@@ -4,8 +4,6 @@ runs:
   using: "composite"
   steps:
     - uses: ./.github/actions/setup
-      with:
-        cache-esgf: true
 
     - name: Verify registry
       shell: bash
