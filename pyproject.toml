@@ -25,13 +25,11 @@ xarray = ">=2025.1.0,<2025.2"
 typer = ">=0.15.4,<0.16"
 xcdat = ">=0.8.0,<0.9"
 xesmf = ">=0.8.7,<0.9"
-"ruamel.yaml" = ">=0.18.10,<0.19"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
-# TODO: Pin a release
-climate-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/climate-ref", rev = "edd74675376e82b2fd5d906e81170e142e8dfbdd" }
+climate-ref = { git = "https://github.com/Climate-REF/climate-ref", subdirectory = "packages/climate-ref", rev = "v0.6.2" }
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"
