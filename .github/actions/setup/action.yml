@@ -1,26 +1,13 @@
 name: "Setup Python via pixi"
-description: "setup Python and pixi with caches"
-inputs:
-  cache-esgf:
-    description: "Cache any downloaded ESGF data"
-    required: false
-    default: "false"
-
+description: "setup Python and pixi"
 runs:
   using: "composite"
   steps:
     - name: Install pixi
-      uses: prefix-dev/setup-pixi@v0.8.3
+      uses: prefix-dev/setup-pixi@v0.8.11
       with:
-        pixi-version: "v0.40.2"
+        pixi-version: "v0.49.0"
         cache: true
         # Frozen is needed as the ref git dependency was not playing nice with a fully locked environment
         frozen: true
         log-level: "v"
-    - name: Cache downloaded ESGF data
-      uses: actions/cache@v4
-      if: ${{ inputs.cache-esgf == 'true' }}
-      with:
-        path: |
-          ~/.esgf
-        key: esgf

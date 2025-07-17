@@ -10,7 +10,7 @@ on:
 jobs:
   regenerate:
     name: Regenerate sample data
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: ${{ github.event.issue.pull_request && github.event.comment.body == '/regenerate' }}
     permissions:
       contents: read

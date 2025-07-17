@@ -43,18 +43,22 @@ def decimate_rectilinear(dataset: xr.Dataset) -> xr.Dataset:
     """
     # Decimate the dataset, but update the bounds
     # 10x10 degree grid
+    regridded_vars = []
+
     for data_var in dataset.data_vars:
         # Some datasets don't correctly use data_vars
         if "_bnds" in data_var:
             continue
         output_grid = xcdat.create_uniform_grid(-90, 90, 10, 0, 359, 10)
-        dataset = dataset.regridder.horizontal(
-            data_var,
-            output_grid=output_grid,
-            tool="xesmf",
-            method="bilinear",
+        regridded_vars.append(
+            dataset.regridder.horizontal(
+                data_var,
+                output_grid=output_grid,
+                tool="xesmf",
+                method="bilinear",
+            )
         )
-    return dataset
+    return xr.merge(regridded_vars)
 
 
 def decimate_curvilinear(dataset: xr.Dataset, factor: int = 10) -> xr.Dataset:

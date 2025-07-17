@@ -1,6 +1,7 @@
 import pathlib
 from pathlib import Path
 
+import joblib
 import pandas as pd
 import pooch
 import typer
@@ -39,11 +40,76 @@ def _get_match(dataset: pd.DataFrame, source_type: str, key: str) -> pd.Series |
     return matches.iloc[0]
 
 
+def _process_dataset(
+    processed_datasets: pd.DataFrame,
+    dataset: pd.Series,
+    request: DataRequest,
+    decimate: bool,
+    output_directory: Path,
+) -> list[dict[str, str]]:
+    match = _get_match(processed_datasets, request.source_type, dataset.key)
+
+    # Check if the dataset has already been processed and can be skipped
+    if match is not None and request.time_span is not None:
+        # Dataset has already been processed and a time span was specified
+        # Check if the dataset already covers the requested time span
+        if int(match.time_start) <= int(dataset["time_start"]) and int(match.time_end) >= int(
+            dataset["time_end"]
+        ):
+            # Already have a dataset that covers the requested time span
+            logger.info(f"Skipping regenerating {dataset.key} as it already covers the requested time span")
+            return []
+
+        # Update the request to match the superset of the time spans
+        time_start = dataset["time_start"] if dataset["time_start"] < match.time_start else match.time_start
+        time_end = dataset["time_end"] if dataset["time_end"] > match.time_end else match.time_end
+        request.time_span = (str(time_start), str(time_end))
+
+        logger.info(f"Regenerating dataset with new time span: {dataset.key} {request.time_span}")
+        for file in match.files:
+            file_path = pathlib.Path(file)
+            if file_path.exists():
+                logger.info(f"Removing existing file: {file}")
+                file_path.unlink()
+
+    output_filenames = []
+    for ds_filename in dataset["files"]:
+        try:
+            ds_orig = xr.open_dataset(ds_filename)
+
+            if decimate:
+                ds_decimated = request.decimate_dataset(ds_orig)
+            else:
+                ds_decimated = ds_orig
+            if ds_decimated is None:
+                continue
+
+            output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
+            output_filename.parent.mkdir(parents=True, exist_ok=True)
+            ds_decimated.to_netcdf(output_filename)
+            output_filenames.append(output_filename)
+        except:
+            logger.exception(f"Failed to process dataset {ds_filename}")
+            raise
+
+    item = {
+        "source_type": request.source_type,
+        "key": dataset.key,
+        "files": output_filenames,
+    }
+    if request.time_span is not None:
+        item["time_start"] = request.time_span[0]
+        item["time_end"] = request.time_span[1]
+
+    return [item]
+
+
 def process_sample_data_request(
     processed_datasets: pd.DataFrame,
     request: DataRequest,
     decimate: bool,
     output_directory: Path,
+    n_jobs: int | None = -1,
 ) -> pd.DataFrame:
     """
     Fetch and create sample datasets
@@ -60,70 +126,31 @@ def process_sample_data_request(
         Whether to decimate the datasets
     output_directory
         The directory to write the output to
+    n_jobs
+        Number of jobs to run in parallel
+        If None, run sequentially.
 
     Returns
     -------
         The processed datasets from this request
     """
+    logger.info(f"Resolving request: {request.id}")
     datasets = request.fetch_datasets()
-    items = []
 
-    for _, dataset in datasets.iterrows():
-        match = _get_match(processed_datasets, request.source_type, dataset.key)
-
-        # Check if the dataset has already been processed and can be skipped
-        if match is not None and request.time_span is not None:
-            # Dataset has already been processed and a time span was specified
-            # Check if the dataset already covers the requested time span
-            if int(match.time_start) <= int(dataset["time_start"]) and int(match.time_end) >= int(
-                dataset["time_end"]
-            ):
-                # Already have a dataset that covers the requested time span
-                logger.info(
-                    f"Skipping regenerating {dataset.key} as it already covers the requested time span"
-                )
-                continue
-
-            # Update the request to match the superset of the time spans
-            time_start = (
-                dataset["time_start"] if dataset["time_start"] < match.time_start else match.time_start
-            )
-            time_end = dataset["time_end"] if dataset["time_end"] > match.time_end else match.time_end
-            request.time_span = (str(time_start), str(time_end))
-
-            logger.info(f"Regenerating dataset with new time span: {dataset.key} {request.time_span}")
-            for file in match.files:
-                file_path = pathlib.Path(file)
-                if file_path.exists():
-                    logger.info(f"Removing existing file: {file}")
-                    file_path.unlink()
-
-        output_filenames = []
-        for ds_filename in dataset["files"]:
-            ds_orig = xr.open_dataset(ds_filename)
-
-            if decimate:
-                ds_decimated = request.decimate_dataset(ds_orig)
-            else:
-                ds_decimated = ds_orig
-            if ds_decimated is None:
-                continue
-
-            output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
-            output_filename.parent.mkdir(parents=True, exist_ok=True)
-            ds_decimated.to_netcdf(output_filename)
-            output_filenames.append(output_filename)
-
-        item = {
-            "source_type": request.source_type,
-            "key": dataset.key,
-            "files": output_filenames,
-        }
-        if request.time_span is not None:
-            item["time_start"] = request.time_span[0]
-            item["time_end"] = request.time_span[1]
-
-        items.append(item)
+    # Process all the datasets in parallel
+    if n_jobs is None:
+        logger.info("Processing datasets sequentially as n_jobs is None")
+        items = [
+            _process_dataset(processed_datasets, dataset, request, decimate, output_directory)
+            for _, dataset in datasets.iterrows()
+        ]
+    else:
+        items = joblib.Parallel(n_jobs=n_jobs)(
+            joblib.delayed(_process_dataset)(processed_datasets, dataset, request, decimate, output_directory)
+            for _, dataset in datasets.iterrows()
+        )
+    # Flatten the list of lists
+    items = [item for sublist in items for item in sublist]
 
     # Regenerate the registry.txt file
     pooch.make_registry(str(OUTPUT_PATH), "registry.txt")
@@ -133,6 +160,7 @@ def process_sample_data_request(
 DATASETS_TO_FETCH = [
     # Example metric data
     CMIP6Request(
+        id="example-metric",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -144,6 +172,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Climate at global warmings levels data
     CMIP6Request(
+        id="esmvaltool-climate-at-global-warmings-levels",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -155,6 +184,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Cloud radiative effects
     CMIP6Request(
+        id="esmvaltool-cloud-radiative-effects",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -166,6 +196,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ECS data
     CMIP6Request(
+        id="esmvaltool-ecs",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -177,6 +208,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ENSO data
     CMIP6Request(
+        id="esmvaltool-enso",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -193,6 +225,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCR data
     CMIP6Request(
+        id="esmvaltool-tcr",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -204,6 +237,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCRE data
     CMIP6Request(
+        id="esmvaltool-tcre",
         facets=dict(
             source_id="MPI-ESM1-2-LR",
             frequency=["fx", "mon"],
@@ -214,6 +248,7 @@ DATASETS_TO_FETCH = [
         time_span=("1850", "1915"),
     ),
     CMIP6Request(
+        id="esmvaltool-tcre-mpi",
         facets=dict(
             source_id="MPI-ESM1-2-LR",
             frequency=["fx", "mon"],
@@ -225,6 +260,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ZEC data
     CMIP6Request(
+        id="esmvaltool-zec",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -236,6 +272,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Sea Ice Area Seasonal Cycle data
     CMIP6Request(
+        id="esmvaltool-sea-ice-area-seasonal-cycle",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -247,6 +284,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data
     CMIP6Request(
+        id="ilamb-data",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -258,6 +296,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data, but a model that has a fire and snow model
     CMIP6Request(
+        id="ilamb-data-fire-snow",
         facets=dict(
             source_id="CESM2",
             frequency=["mon"],
@@ -269,6 +308,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data, nbp requires a longer time span
     CMIP6Request(
+        id="ilamb-data-nbp",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["mon"],
@@ -280,6 +320,7 @@ DATASETS_TO_FETCH = [
     ),
     # IOMB data
     CMIP6Request(  # Already provided by the ESMValTool ENSO request.
+        id="iomb-data",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -290,6 +331,7 @@ DATASETS_TO_FETCH = [
         time_span=("2000", "2025"),
     ),
     CMIP6Request(
+        id="iomb-data-2",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -301,6 +343,7 @@ DATASETS_TO_FETCH = [
     ),
     # PMP modes of variability data
     CMIP6Request(
+        id="pmp-modes-of-variability",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -332,17 +375,29 @@ DATASETS_TO_FETCH = [
 def create_sample_data(
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
+    only: list[str] | None = None,
+    n_jobs: int = -1,
+    run_sequentially: bool = False,
 ) -> None:
     """Fetch and create sample datasets"""
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
+    if run_sequentially:
+        n_jobs = None
+        logger.info("Running in sequential mode, setting n_jobs to None")
+
     for dataset_requested in DATASETS_TO_FETCH:
+        if only:
+            if dataset_requested.id not in only:
+                logger.info(f"Skipping dataset {dataset_requested.id} as it is not in the 'only' list")
+                continue
         # Process the request
         new_datasets = process_sample_data_request(
             processed_datasets,
             dataset_requested,
             decimate=decimate,
             output_directory=pathlib.Path(output),
+            n_jobs=n_jobs,
         )
         # Remove duplicate source_type and key values, but keep the latest one
         processed_datasets = (
