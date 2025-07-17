@@ -314,8 +314,8 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/50/cd/30110dc0ffcf3b131156077b90e9f60ed75711223f306da4db08eff8403b/beautifulsoup4-4.13.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/b0/215274ef0d835bbc1056392a367646648b6084e39d489099959aefcca2af/cattrs-25.1.1-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&tag=v0.6.2#3a0947641b09d96d443c5982981b172d60626bfd
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref-core&tag=v0.6.2#3a0947641b09d96d443c5982981b172d60626bfd
+      - pypi: https://files.pythonhosted.org/packages/b9/44/86dab7022f650324958ef1f985406843b138ac4298e041c238d9f023678e/climate_ref-0.6.3-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/2f/da/a2ea9d27b1a5cb9297217d9aa52f7771c34f6419a18075f770e5cab0ff66/climate_ref_core-0.6.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/79/13/13576941bf7cf95026abae43d8427c812c0054408212bf8ed490eda846b0/crc32c-2.7.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/50/3d/9373ad9c56321fdab5b41197068e1d8c25883b3fea29dd361f9b55116869/dill-0.4.0-py3-none-any.whl
@@ -600,8 +600,8 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/77/06/bb80f5f86020c4551da315d78b3ab75e8228f89f0162f2c3a819e407941a/attrs-25.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/50/cd/30110dc0ffcf3b131156077b90e9f60ed75711223f306da4db08eff8403b/beautifulsoup4-4.13.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/b0/215274ef0d835bbc1056392a367646648b6084e39d489099959aefcca2af/cattrs-25.1.1-py3-none-any.whl
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&tag=v0.6.2#3a0947641b09d96d443c5982981b172d60626bfd
-      - pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref-core&tag=v0.6.2#3a0947641b09d96d443c5982981b172d60626bfd
+      - pypi: https://files.pythonhosted.org/packages/b9/44/86dab7022f650324958ef1f985406843b138ac4298e041c238d9f023678e/climate_ref-0.6.3-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/2f/da/a2ea9d27b1a5cb9297217d9aa52f7771c34f6419a18075f770e5cab0ff66/climate_ref_core-0.6.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/47/02/2bd65fdef10139b6a802d83a7f966b7750fe5ffb1042f7cbe5dbb6403869/crc32c-2.7.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/50/3d/9373ad9c56321fdab5b41197068e1d8c25883b3fea29dd361f9b55116869/dill-0.4.0-py3-none-any.whl
@@ -1655,50 +1655,52 @@ packages:
   - pkg:pypi/click?source=hash-mapping
   size: 87749
   timestamp: 1747811451319
-- pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref&tag=v0.6.2#3a0947641b09d96d443c5982981b172d60626bfd
+- pypi: https://files.pythonhosted.org/packages/b9/44/86dab7022f650324958ef1f985406843b138ac4298e041c238d9f023678e/climate_ref-0.6.3-py3-none-any.whl
   name: climate-ref
-  version: 0.6.2
+  version: 0.6.3
+  sha256: dc0fe158a1d5fdea2f0ebc5213eda6acb45baf078ae0ea272f7ac1bc9c7da8a8
   requires_dist:
-  - climate-ref-core @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-core
+  - alembic>=1.13.3
   - attrs>=24.2.0
   - cattrs>=24.1.2
-  - environs>=11.0.0
-  - tomlkit>=0.13.2
-  - typer>=0.12.5
-  - sqlalchemy>=2.0.36
-  - alembic>=1.13.3
-  - loguru>=0.7.2
+  - climate-ref-core
   - ecgtools>=2024.7.31
-  - platformdirs>=4.3.6
-  - tqdm>=4.67.1
+  - environs>=11.0.0
+  - loguru>=0.7.2
   - parsl>=2025.5.19 ; sys_platform != 'win32'
-  - psycopg2-binary>=2.9.2 ; extra == 'postgres'
+  - platformdirs>=4.3.6
+  - sqlalchemy>=2.0.36
+  - tomlkit>=0.13.2
+  - tqdm>=4.67.1
+  - typer>=0.12.5
+  - climate-ref-esmvaltool>=0.5.0 ; extra == 'aft-providers'
+  - climate-ref-ilamb>=0.5.0 ; extra == 'aft-providers'
+  - climate-ref-pmp>=0.5.0 ; extra == 'aft-providers'
+  - climate-ref-celery>=0.5.0 ; extra == 'celery'
   - alembic-postgresql-enum>=1.7.0 ; extra == 'postgres'
-  - climate-ref-celery @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-celery ; extra == 'celery'
-  - climate-ref-esmvaltool @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-esmvaltool ; extra == 'aft-providers'
-  - climate-ref-pmp @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-pmp ; extra == 'aft-providers'
-  - climate-ref-ilamb @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-ilamb ; extra == 'aft-providers'
-  - climate-ref-esmvaltool @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-esmvaltool ; extra == 'providers'
-  - climate-ref-pmp @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-pmp ; extra == 'providers'
-  - climate-ref-ilamb @ git+https://github.com/Climate-REF/climate-ref@v0.6.2#subdirectory=packages/climate-ref-ilamb ; extra == 'providers'
+  - psycopg2-binary>=2.9.2 ; extra == 'postgres'
+  - climate-ref-esmvaltool>=0.5.0 ; extra == 'providers'
+  - climate-ref-ilamb>=0.5.0 ; extra == 'providers'
+  - climate-ref-pmp>=0.5.0 ; extra == 'providers'
   requires_python: '>=3.11'
-- pypi: git+https://github.com/Climate-REF/climate-ref?subdirectory=packages%2Fclimate-ref-core&tag=v0.6.2#3a0947641b09d96d443c5982981b172d60626bfd
+- pypi: https://files.pythonhosted.org/packages/2f/da/a2ea9d27b1a5cb9297217d9aa52f7771c34f6419a18075f770e5cab0ff66/climate_ref_core-0.6.3-py3-none-any.whl
   name: climate-ref-core
-  version: 0.6.2
+  version: 0.6.3
+  sha256: 1c97f79a24b92ba0ffae752e25d04776aa957a6804ac66c05559ad10a16bc060
   requires_dist:
   - attrs>=23.2.0
   - cattrs>=24.1
+  - environs>=11
+  - loguru>=0.7.0
+  - numpy>=1.25.0
+  - pandas>=2.1.0
+  - pooch>=1.8.0,<2
   - pydantic>=2.10.6
-  - typing-extensions
+  - pyyaml>=6.0.2
   - requests
   - rich
-  - loguru>=0.7.0
-  - pooch>=1.8.0,<2
-  - environs>=11
-  - pyyaml>=6.0.2
   - setuptools>=75.8.0
-  - pandas>=2.1.0
-  - numpy>=1.25.0
+  - typing-extensions
   requires_python: '>=3.11'
 - conda: https://conda.anaconda.org/conda-forge/noarch/cloudpickle-3.1.1-pyhd8ed1ab_0.conda
   sha256: 21ecead7268241007bf65691610cd7314da68c1f88113092af690203b5780db5
@@ -6524,7 +6526,7 @@ packages:
 - pypi: ./
   name: ref-sample-data
   version: 0.6.3
-  sha256: a7dca82cf46773ba63cc7b13727fc78c95be468b6317ff91ba66433420ec70c8
+  sha256: 5060a6130ef077980446fedfa74515b1a97589e0e416a1fd2833efcd58db6536
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/requests-2.32.4-pyhd8ed1ab_0.conda

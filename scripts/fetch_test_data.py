@@ -349,11 +349,16 @@ DATASETS_TO_FETCH = [
 def create_sample_data(
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
+    only: list[str] | None = None,
 ) -> None:
     """Fetch and create sample datasets"""
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
     for dataset_requested in DATASETS_TO_FETCH:
+        if only:
+            if dataset_requested.id not in only:
+                logger.info(f"Skipping dataset {dataset_requested.id} as it is not in the 'only' list")
+                continue
         # Process the request
         new_datasets = process_sample_data_request(
             processed_datasets,
