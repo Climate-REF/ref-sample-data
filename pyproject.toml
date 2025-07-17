@@ -18,13 +18,13 @@ platforms = ["osx-arm64", "linux-64"]
 [tool.pixi.dependencies]
 python = ">=3.10"
 pooch = ">=1.8.2,<2"
-intake-esgf = ">=2025.5.9,<2026"
+intake-esgf = ">=2025.6.6,<2026"
 matplotlib = ">=3.10.3,<4"
-scipy = ">=1.15.2,<2"
-xarray = ">=2025.1.0,<2025.2"
-typer = ">=0.15.4,<0.16"
-xcdat = ">=0.8.0,<0.9"
-xesmf = ">=0.8.7,<0.9"
+scipy = ">=1.16.0,<2"
+xarray = ">=2025.7.1,<2026"
+typer = ">=0.16.0,<0.17"
+xcdat = ">=0.9.1,<0.10"
+xesmf = ">=0.8.10,<0.9"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
