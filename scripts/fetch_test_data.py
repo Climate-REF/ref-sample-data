@@ -109,6 +109,7 @@ def process_sample_data_request(
     request: DataRequest,
     decimate: bool,
     output_directory: Path,
+    n_jobs: int | None = -1,
 ) -> pd.DataFrame:
     """
     Fetch and create sample datasets
@@ -125,6 +126,9 @@ def process_sample_data_request(
         Whether to decimate the datasets
     output_directory
         The directory to write the output to
+    n_jobs
+        Number of jobs to run in parallel
+        If None, run sequentially.
 
     Returns
     -------
@@ -134,10 +138,17 @@ def process_sample_data_request(
     datasets = request.fetch_datasets()
 
     # Process all the datasets in parallel
-    items = joblib.Parallel(n_jobs=-1)(
-        joblib.delayed(_process_dataset)(processed_datasets, dataset, request, decimate, output_directory)
-        for _, dataset in datasets.iterrows()
-    )
+    if n_jobs is None:
+        logger.info("Processing datasets sequentially as n_jobs is None")
+        items = [
+            _process_dataset(processed_datasets, dataset, request, decimate, output_directory)
+            for _, dataset in datasets.iterrows()
+        ]
+    else:
+        items = joblib.Parallel(n_jobs=n_jobs)(
+            joblib.delayed(_process_dataset)(processed_datasets, dataset, request, decimate, output_directory)
+            for _, dataset in datasets.iterrows()
+        )
     # Flatten the list of lists
     items = [item for sublist in items for item in sublist]
 
@@ -365,9 +376,15 @@ def create_sample_data(
     decimate: bool = True,
     output: Path = OUTPUT_PATH,
     only: list[str] | None = None,
+    n_jobs: int = -1,
+    run_sequentially: bool = False,
 ) -> None:
     """Fetch and create sample datasets"""
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
+
+    if run_sequentially:
+        n_jobs = None
+        logger.info("Running in sequential mode, setting n_jobs to None")
 
     for dataset_requested in DATASETS_TO_FETCH:
         if only:
@@ -380,6 +397,7 @@ def create_sample_data(
             dataset_requested,
             decimate=decimate,
             output_directory=pathlib.Path(output),
+            n_jobs=n_jobs,
         )
         # Remove duplicate source_type and key values, but keep the latest one
         processed_datasets = (
