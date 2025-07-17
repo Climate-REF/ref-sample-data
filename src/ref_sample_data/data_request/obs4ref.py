@@ -59,6 +59,11 @@ class Obs4REFRequest(DataRequest):
         has_latlon = "lat" in dataset.dims and "lon" in dataset.dims
         has_ij = "i" in dataset.dims and "j" in dataset.dims
 
+        # If less than 10 MB skip decimating
+        small_file_threshold = 10 * 1024**2
+        if dataset.nbytes < small_file_threshold:
+            return dataset
+
         if has_latlon:
             assert len(dataset.lat.dims) == 1 and len(dataset.lon.dims) == 1
 

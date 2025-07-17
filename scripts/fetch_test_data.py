@@ -1,6 +1,7 @@
 import pathlib
 from pathlib import Path
 
+import joblib
 import pandas as pd
 import pooch
 import typer
@@ -39,6 +40,70 @@ def _get_match(dataset: pd.DataFrame, source_type: str, key: str) -> pd.Series |
     return matches.iloc[0]
 
 
+def _process_dataset(
+    processed_datasets: pd.DataFrame,
+    dataset: pd.Series,
+    request: DataRequest,
+    decimate: bool,
+    output_directory: Path,
+) -> list[dict[str, str]]:
+    match = _get_match(processed_datasets, request.source_type, dataset.key)
+
+    # Check if the dataset has already been processed and can be skipped
+    if match is not None and request.time_span is not None:
+        # Dataset has already been processed and a time span was specified
+        # Check if the dataset already covers the requested time span
+        if int(match.time_start) <= int(dataset["time_start"]) and int(match.time_end) >= int(
+            dataset["time_end"]
+        ):
+            # Already have a dataset that covers the requested time span
+            logger.info(f"Skipping regenerating {dataset.key} as it already covers the requested time span")
+            return []
+
+        # Update the request to match the superset of the time spans
+        time_start = dataset["time_start"] if dataset["time_start"] < match.time_start else match.time_start
+        time_end = dataset["time_end"] if dataset["time_end"] > match.time_end else match.time_end
+        request.time_span = (str(time_start), str(time_end))
+
+        logger.info(f"Regenerating dataset with new time span: {dataset.key} {request.time_span}")
+        for file in match.files:
+            file_path = pathlib.Path(file)
+            if file_path.exists():
+                logger.info(f"Removing existing file: {file}")
+                file_path.unlink()
+
+    output_filenames = []
+    for ds_filename in dataset["files"]:
+        try:
+            ds_orig = xr.open_dataset(ds_filename)
+
+            if decimate:
+                ds_decimated = request.decimate_dataset(ds_orig)
+            else:
+                ds_decimated = ds_orig
+            if ds_decimated is None:
+                continue
+
+            output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
+            output_filename.parent.mkdir(parents=True, exist_ok=True)
+            ds_decimated.to_netcdf(output_filename)
+            output_filenames.append(output_filename)
+        except:
+            logger.exception(f"Failed to process dataset {ds_filename}")
+            raise
+
+    item = {
+        "source_type": request.source_type,
+        "key": dataset.key,
+        "files": output_filenames,
+    }
+    if request.time_span is not None:
+        item["time_start"] = request.time_span[0]
+        item["time_end"] = request.time_span[1]
+
+    return [item]
+
+
 def process_sample_data_request(
     processed_datasets: pd.DataFrame,
     request: DataRequest,
@@ -67,64 +132,14 @@ def process_sample_data_request(
     """
     logger.info(f"Resolving request: {request.id}")
     datasets = request.fetch_datasets()
-    items = []
 
-    for _, dataset in datasets.iterrows():
-        match = _get_match(processed_datasets, request.source_type, dataset.key)
-
-        # Check if the dataset has already been processed and can be skipped
-        if match is not None and request.time_span is not None:
-            # Dataset has already been processed and a time span was specified
-            # Check if the dataset already covers the requested time span
-            if int(match.time_start) <= int(dataset["time_start"]) and int(match.time_end) >= int(
-                dataset["time_end"]
-            ):
-                # Already have a dataset that covers the requested time span
-                logger.info(
-                    f"Skipping regenerating {dataset.key} as it already covers the requested time span"
-                )
-                continue
-
-            # Update the request to match the superset of the time spans
-            time_start = (
-                dataset["time_start"] if dataset["time_start"] < match.time_start else match.time_start
-            )
-            time_end = dataset["time_end"] if dataset["time_end"] > match.time_end else match.time_end
-            request.time_span = (str(time_start), str(time_end))
-
-            logger.info(f"Regenerating dataset with new time span: {dataset.key} {request.time_span}")
-            for file in match.files:
-                file_path = pathlib.Path(file)
-                if file_path.exists():
-                    logger.info(f"Removing existing file: {file}")
-                    file_path.unlink()
-
-        output_filenames = []
-        for ds_filename in dataset["files"]:
-            ds_orig = xr.open_dataset(ds_filename)
-
-            if decimate:
-                ds_decimated = request.decimate_dataset(ds_orig)
-            else:
-                ds_decimated = ds_orig
-            if ds_decimated is None:
-                continue
-
-            output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
-            output_filename.parent.mkdir(parents=True, exist_ok=True)
-            ds_decimated.to_netcdf(output_filename)
-            output_filenames.append(output_filename)
-
-        item = {
-            "source_type": request.source_type,
-            "key": dataset.key,
-            "files": output_filenames,
-        }
-        if request.time_span is not None:
-            item["time_start"] = request.time_span[0]
-            item["time_end"] = request.time_span[1]
-
-        items.append(item)
+    # Process all the datasets in parallel
+    items = joblib.Parallel(n_jobs=-1)(
+        joblib.delayed(_process_dataset)(processed_datasets, dataset, request, decimate, output_directory)
+        for _, dataset in datasets.iterrows()
+    )
+    # Flatten the list of lists
+    items = [item for sublist in items for item in sublist]
 
     # Regenerate the registry.txt file
     pooch.make_registry(str(OUTPUT_PATH), "registry.txt")
