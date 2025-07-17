@@ -1,6 +1,6 @@
 # Regenerate the sample data via a manual trigger
 
-name: PR comment handling
+name: Regenerate Sample Data
 on:
   workflow_dispatch:
 
