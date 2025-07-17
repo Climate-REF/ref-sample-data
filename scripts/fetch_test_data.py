@@ -65,6 +65,7 @@ def process_sample_data_request(
     -------
         The processed datasets from this request
     """
+    logger.info(f"Resolving request: {request.id}")
     datasets = request.fetch_datasets()
     items = []
 
@@ -133,6 +134,7 @@ def process_sample_data_request(
 DATASETS_TO_FETCH = [
     # Example metric data
     CMIP6Request(
+        id="example-metric",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -144,6 +146,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Climate at global warmings levels data
     CMIP6Request(
+        id="esmvaltool-climate-at-global-warmings-levels",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -155,6 +158,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Cloud radiative effects
     CMIP6Request(
+        id="esmvaltool-cloud-radiative-effects",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -166,6 +170,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ECS data
     CMIP6Request(
+        id="esmvaltool-ecs",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -177,6 +182,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ENSO data
     CMIP6Request(
+        id="esmvaltool-enso",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -193,6 +199,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCR data
     CMIP6Request(
+        id="esmvaltool-tcr",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -204,6 +211,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCRE data
     CMIP6Request(
+        id="esmvaltool-tcre",
         facets=dict(
             source_id="MPI-ESM1-2-LR",
             frequency=["fx", "mon"],
@@ -214,6 +222,7 @@ DATASETS_TO_FETCH = [
         time_span=("1850", "1915"),
     ),
     CMIP6Request(
+        id="esmvaltool-tcre-mpi",
         facets=dict(
             source_id="MPI-ESM1-2-LR",
             frequency=["fx", "mon"],
@@ -225,6 +234,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool ZEC data
     CMIP6Request(
+        id="esmvaltool-zec",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -236,6 +246,7 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool Sea Ice Area Seasonal Cycle data
     CMIP6Request(
+        id="esmvaltool-sea-ice-area-seasonal-cycle",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -247,6 +258,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data
     CMIP6Request(
+        id="ilamb-data",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -258,6 +270,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data, but a model that has a fire and snow model
     CMIP6Request(
+        id="ilamb-data-fire-snow",
         facets=dict(
             source_id="CESM2",
             frequency=["mon"],
@@ -269,6 +282,7 @@ DATASETS_TO_FETCH = [
     ),
     # ILAMB data, nbp requires a longer time span
     CMIP6Request(
+        id="ilamb-data-nbp",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["mon"],
@@ -280,6 +294,7 @@ DATASETS_TO_FETCH = [
     ),
     # IOMB data
     CMIP6Request(  # Already provided by the ESMValTool ENSO request.
+        id="iomb-data",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -290,6 +305,7 @@ DATASETS_TO_FETCH = [
         time_span=("2000", "2025"),
     ),
     CMIP6Request(
+        id="iomb-data-2",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
@@ -301,6 +317,7 @@ DATASETS_TO_FETCH = [
     ),
     # PMP modes of variability data
     CMIP6Request(
+        id="pmp-modes-of-variability",
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],

@@ -20,6 +20,7 @@ class Obs4REFRequest(DataRequest):
     ```
     """
 
+    id = "obs4ref"
     source_type = "obs4REF"
 
     def fetch_datasets(self) -> pd.DataFrame:
