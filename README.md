@@ -42,7 +42,6 @@ the hashes are generated on the CI and stored in the `registry.txt` file.
 These hashes are verified as part of the CI pipeline to ensure that the data is consistent.
 
 If the hashes in the `registry.txt` file are out of date,
-you can regenerate the sample data by adding a comment to an open Pull Request with the text `/regenerate`.
-This will trigger a [GitHub Actions workflow](https://github.com/CMIP-REF/ref-sample-data/actions/workflows/pr-comment.yaml)
-that will regenerate the sample data and update the `registry.txt` file.
+you can regenerate the sample data by manually running the [Regenerate workflow](https://github.com/Climate-REF/ref-sample-data/actions/workflows/regenerate.yaml).
+This workflow will regenerate the sample data and update the `registry.txt` file with the updated hashes.
 Be sure to pull the new commit if you need to add any additional changes to your pull request.
