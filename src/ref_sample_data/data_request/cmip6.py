@@ -67,7 +67,10 @@ class CMIP6Request(IntakeESGFDataRequest):
         "grid_label",
     )
 
-    def __init__(self, facets: dict[str, Any], remove_ensembles: bool, time_span: tuple[str, str] | None):
+    def __init__(
+        self, id: str, facets: dict[str, Any], remove_ensembles: bool, time_span: tuple[str, str] | None
+    ):
+        self.id = id
         self.avail_facets = [
             "mip_era",
             "activity_drs",
