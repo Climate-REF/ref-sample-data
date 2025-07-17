@@ -22,6 +22,7 @@ jobs:
         run: make pre-commit
 
   tests:
+    if: github.repository == 'Climate-REF/ref-sample-data'
     runs-on: "self-hosted"
     steps:
       - name: Check out repository
