@@ -51,22 +51,6 @@ class Obs4MIPsRequest(IntakeESGFDataRequest):
         self.remove_ensembles = remove_ensembles
         self.time_span = time_span
 
-        super().__init__(remove_ensembles, time_span)
-
-        self.obs4mips_path_items = [
-            "activity_id",
-            "institution_id",
-            "source_id",
-            "variable_id",
-            "grid_label",
-        ]
-
-        self.obs4mips_filename_paths = [
-            "variable_id",
-            "source_id",
-            "grid_label",
-        ]
-
         assert all(key in self.avail_facets for key in self.obs4mips_path_items), "Error message"
         assert all(key in self.avail_facets for key in self.obs4mips_filename_paths), "Error message"
 
