@@ -121,6 +121,7 @@ def process_sample_data_request(
     decimate: bool,
     output_directory: Path,
     stats: dict[str, float],
+    dry_run: bool,
 ) -> pd.DataFrame:
     """
     Fetch and create sample datasets
@@ -143,8 +144,8 @@ def process_sample_data_request(
         The processed datasets from this request
     """
     start_time = time.perf_counter()
-    datasets = request.fetch_datasets()
-    stats["download"] += time.perf_counter() - start_time
+    datasets = request.fetch_datasets(dry_run=dry_run)
+    stats["search and download"] += time.perf_counter() - start_time
 
     items = []
     delayeds = []
@@ -176,30 +177,32 @@ def process_sample_data_request(
             logger.info(f"Regenerating dataset with new time span: {dataset.key} {request.time_span}")
             for file in match.files:
                 file_path = pathlib.Path(file)
-                if file_path.exists():
+                if file_path.exists() and not dry_run:
                     logger.info(f"Removing existing file: {file}")
                     file_path.unlink()
 
         output_filenames = []
         for ds_filename in sorted(dataset["files"]):
-            ds_orig = _open_dataset(ds_filename)
-
-            if decimate:
-                ds_decimated = request.decimate_dataset(ds_orig)
-            else:
-                ds_decimated = ds_orig
-            if ds_decimated is None:
-                continue
-
-            output_filename = output_directory / request.generate_filename(dataset, ds_decimated, ds_filename)
-            logger.info(
-                "Creating {output_filename} from {input_filename}",
-                output_filename=output_filename,
-                input_filename=ds_filename,
-            )
-            result = _save_dataset(ds_decimated, output_filename)
-            delayeds.append(result)
+            output_filename = output_directory / request.generate_filename(dataset, ds_filename)
             output_filenames.append(output_filename)
+
+            if not dry_run:
+                ds_orig = _open_dataset(ds_filename)
+
+                if decimate:
+                    ds_decimated = request.decimate_dataset(ds_orig)
+                else:
+                    ds_decimated = ds_orig
+                if ds_decimated is None:
+                    continue
+
+                logger.info(
+                    "Creating {output_filename} from {input_filename}",
+                    output_filename=output_filename,
+                    input_filename=ds_filename,
+                )
+                result = _save_dataset(ds_decimated, output_filename)
+                delayeds.append(result)
 
         item = {
             "source_type": request.source_type,
@@ -211,16 +214,19 @@ def process_sample_data_request(
             item["time_end"] = request.time_span[1]
 
         items.append(item)
-    stats["decimate"] += time.perf_counter() - start_time
 
-    logger.info("Computing and saving datasets to disk")
-    start_time = time.perf_counter()
-    dask.compute(delayeds)
-    stats["compute"] += time.perf_counter() - start_time
+    if not dry_run:
+        stats["decimate"] += time.perf_counter() - start_time
 
-    # Regenerate the registry.txt file
-    logger.info("Making registry")
-    pooch.make_registry(str(OUTPUT_PATH), "registry.txt")
+        logger.info("Computing and saving datasets to disk")
+        start_time = time.perf_counter()
+        dask.compute(delayeds)
+        stats["compute"] += time.perf_counter() - start_time
+
+        # Regenerate the registry.txt file
+        logger.info("Making registry")
+        pooch.make_registry(str(OUTPUT_PATH), "registry.txt")
+
     return pd.DataFrame(items)
 
 
@@ -463,6 +469,7 @@ def create_sample_data(
     output: Path = OUTPUT_PATH,
     log_level: str = "INFO",
     num_workers: int = 1,
+    dry_run: bool = False,
     # threads_per_worker: int = 2,
     # memory_per_worker: str = "2.5GiB",
 ) -> None:
@@ -473,7 +480,7 @@ def create_sample_data(
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
     stats = {
-        "download": 0.0,
+        "search and download": 0.0,
         "decimate": 0.0,
         "compute": 0.0,
     }
@@ -485,7 +492,7 @@ def create_sample_data(
     # ) as client:
     #     logger.info("View the Dask dashboard at: {client.dashboard_link}", client=client)
     with dask.config.set(scheduler="synchronous"):
-        for dataset_requested in DATASETS_TO_FETCH:
+        for dataset_requested in DATASETS_TO_FETCH[-1:]:
             # Process the request
             new_datasets = process_sample_data_request(
                 processed_datasets,
@@ -493,6 +500,7 @@ def create_sample_data(
                 decimate=decimate,
                 output_directory=pathlib.Path(output),
                 stats=stats,
+                dry_run=dry_run,
             )
             # Remove duplicate source_type and key values, but keep the latest one
             processed_datasets = (
@@ -502,6 +510,17 @@ def create_sample_data(
             )
     for step, duration in stats.items():
         logger.info(f"{step.capitalize()} took {datetime.timedelta(seconds=duration)}")
+
+    output_files = {f for d in processed_datasets.files for f in d}
+    missing = sorted(str(f) for f in output_files if not f.exists())
+    if missing:
+        msg = f"The following expected files were not present:\n{'\n'.join(missing)}"
+        raise ValueError(msg)
+    registry = pooch.Pooch().load_registry("registry.txt")
+    if set(registry.registry.keys()) != output_files:
+        msg = "The registry is not up to date"
+        raise ValueError(msg)
+
     logger.info("Sample datasets created successfully")
 
 

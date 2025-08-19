@@ -3,7 +3,6 @@ from pathlib import Path
 
 import climate_ref  # noqa
 import pandas as pd
-import xarray as xr
 from climate_ref_core.dataset_registry import dataset_registry_manager
 
 from ref_sample_data.data_request.base import DecimateMixin
@@ -22,7 +21,7 @@ class Obs4REFRequest(DecimateMixin):
     source_type = "obs4REF"
     time_span: tuple[str, str] | None = None
 
-    def fetch_datasets(self) -> pd.DataFrame:
+    def fetch_datasets(self, dry_run: bool) -> pd.DataFrame:
         """
         Fetch the datasets from the source
 
@@ -32,7 +31,10 @@ class Obs4REFRequest(DecimateMixin):
 
         datasets = []
         for key in registry.registry.keys():
-            dataset_path = registry.fetch(key)
+            if dry_run:
+                dataset_path = registry.abspath / key
+            else:
+                dataset_path = registry.fetch(key)
             datasets.append(
                 {
                     "key": key,
@@ -41,7 +43,7 @@ class Obs4REFRequest(DecimateMixin):
             )
         return pd.DataFrame(datasets)
 
-    def generate_filename(self, metadata: pd.Series, ds: xr.Dataset, ds_filename: pathlib.Path) -> Path:
+    def generate_filename(self, metadata: pd.Series, ds_filename: pathlib.Path) -> Path:
         """
         Create the output filename for the dataset.
 

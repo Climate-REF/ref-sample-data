@@ -4,10 +4,9 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
-import xarray as xr
 
 from ref_sample_data.data_request.base import DecimateMixin, IntakeESGFMixin
-from ref_sample_data.data_request.cmip6 import prefix_to_filename
+from ref_sample_data.data_request.cmip6 import timerange_from_filename
 
 
 class Obs4MIPsRequest(IntakeESGFMixin, DecimateMixin):
@@ -66,7 +65,7 @@ class Obs4MIPsRequest(IntakeESGFMixin, DecimateMixin):
         assert all(key in self.avail_facets for key in self.obs4mips_path_items), "Error message"
         assert all(key in self.avail_facets for key in self.obs4mips_filename_paths), "Error message"
 
-    def generate_filename(self, metadata: pd.Series, ds: xr.Dataset, ds_filename: pathlib.Path) -> Path:
+    def generate_filename(self, metadata: pd.Series, ds_filename: pathlib.Path) -> Path:
         """
         Create the output filename for the dataset.
 
@@ -92,5 +91,7 @@ class Obs4MIPsRequest(IntakeESGFMixin, DecimateMixin):
             filename_prefix += "_".join(
                 [metadata[item] for item in self.obs4mips_filename_paths if item != "variable_id"]
             )
-
-        return output_path / prefix_to_filename(ds, filename_prefix)
+        timerange = timerange_from_filename(ds_filename, metadata)
+        if timerange:
+            filename_prefix = f"{filename_prefix}_{timerange}"
+        return output_path / f"{filename_prefix}.nc"

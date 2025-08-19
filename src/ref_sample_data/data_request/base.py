@@ -21,7 +21,7 @@ class DataRequest(Protocol):
     source_type: str
     time_span: tuple[str, str] | None = None
 
-    def fetch_datasets(self) -> pd.DataFrame:
+    def fetch_datasets(self, dry_run: bool) -> pd.DataFrame:
         """
         Fetch the datasets from the source
 
@@ -36,9 +36,7 @@ class DataRequest(Protocol):
         """Downscale the dataset to a smaller size."""
         ...
 
-    def generate_filename(
-        self, metadata: pd.Series, ds: xr.Dataset, ds_filename: pathlib.Path
-    ) -> pathlib.Path:
+    def generate_filename(self, metadata: pd.Series, ds_filename: pathlib.Path) -> pathlib.Path:
         """Create the output filename for the dataset."""
         ...
 
@@ -79,7 +77,7 @@ class IntakeESGFMixin:
     facets: dict[str, str | tuple[str, ...]]
     remove_ensembles: bool
 
-    def fetch_datasets(self) -> pd.DataFrame:
+    def fetch_datasets(self, dry_run: bool) -> pd.DataFrame:
         """Fetch the datasets from the ESGF."""
         # Enable two indices with distrib search for finding obs4MIPs records.
         intake_esgf.conf.set(
@@ -99,8 +97,18 @@ class IntakeESGFMixin:
         cat.search(**(opts | self.facets))
         if self.remove_ensembles:
             cat.remove_ensembles()
-
-        path_dict = cat.to_path_dict(prefer_streaming=False, minimal_keys=False, quiet=True)
+        if dry_run:
+            # Search only.
+            path_dict = {}
+            for item in cat._get_file_info():
+                key = item["key"]
+                local_path = cat.local_cache[0] / item["path"]
+                if key not in path_dict:
+                    path_dict[key] = []
+                path_dict[key].append(local_path)
+        else:
+            # Search and download.
+            path_dict = cat.to_path_dict(prefer_streaming=False, minimal_keys=False, quiet=True)
         merged_df = cat.df.merge(pd.Series(path_dict, name="files"), left_on="key", right_index=True)
         if self.time_span:
             merged_df["time_start"] = self.time_span[0]
