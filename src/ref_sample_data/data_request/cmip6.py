@@ -6,8 +6,7 @@ from typing import Any
 import pandas as pd
 import xarray as xr
 
-from ref_sample_data.data_request.base import IntakeESGFDataRequest
-from ref_sample_data.resample import decimate_curvilinear, decimate_rectilinear
+from ref_sample_data.data_request.base import DecimateMixin, IntakeESGFMixin
 
 
 def prefix_to_filename(ds, filename_prefix: str) -> str:
@@ -37,7 +36,7 @@ def prefix_to_filename(ds, filename_prefix: str) -> str:
     return filename
 
 
-class CMIP6Request(IntakeESGFDataRequest):
+class CMIP6Request(IntakeESGFMixin, DecimateMixin):
     """
     Represents a CMIP6 dataset request
 
@@ -91,45 +90,6 @@ class CMIP6Request(IntakeESGFDataRequest):
 
         assert all(key in self.avail_facets for key in self.cmip6_path_items), "Error message"
         assert all(key in self.avail_facets for key in self.cmip6_filename_paths), "Error message"
-
-    def decimate_dataset(self, dataset: xr.Dataset) -> xr.Dataset | None:
-        """
-        Downscale the dataset to a smaller size.
-
-        Parameters
-        ----------
-        dataset
-            The dataset to downscale
-
-        Returns
-        -------
-        xr.Dataset
-            The downscaled dataset
-        """
-        has_latlon = "lat" in dataset.dims and "lon" in dataset.dims
-        has_ij = "i" in dataset.dims and "j" in dataset.dims
-
-        # The AMOC variable `msftmz` has these strange dims and we do not want to decimate
-        skip_decimate = {"time", "basin", "lev", "lat"}.issubset(dataset.dims)
-
-        if has_latlon:
-            assert len(dataset.lat.dims) == 1 and len(dataset.lon.dims) == 1
-
-            result = decimate_rectilinear(dataset)
-        elif has_ij:
-            # 2d curvilinear grid (generally ocean variables)
-            result = decimate_curvilinear(dataset)
-        elif skip_decimate:
-            result = dataset
-        else:
-            raise ValueError("Cannot decimate this grid: too many dimensions")
-
-        if "time" in dataset.dims and self.time_span is not None:
-            result = result.sel(time=slice(*self.time_span))
-            if result.time.size == 0:
-                result = None
-
-        return result
 
     def generate_filename(self, metadata: pd.Series, ds: xr.Dataset, ds_filename: pathlib.Path) -> Path:
         """
