@@ -164,8 +164,25 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "tas", "tos", "rsut", "rlut", "rsdt"],
+            variable_id=[
+                "areacella",
+                "tas",
+                "tos",
+                "rsut",
+                "rsdt",
+            ],
             experiment_id=["ssp126", "historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2000", "2025"),
+    ),
+    CMIP6Request(
+        id="example-metric",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["rlut"],
+            experiment_id=["historical"],
         ),
         remove_ensembles=True,
         time_span=("2000", "2025"),

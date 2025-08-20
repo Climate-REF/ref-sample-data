@@ -79,9 +79,14 @@ class IntakeESGFDataRequest(DataRequest):
 
     def fetch_datasets(self) -> pd.DataFrame:
         """Fetch the datasets from the ESGF."""
+        facets = dict(self.facets)
+        if self.time_span:
+            facets["file_start"] = self.time_span[0]
+            facets["file_end"] = self.time_span[1]
+
         cat = ESGFCatalog()
 
-        cat.search(**self.facets)
+        cat.search(**facets)
         if self.remove_ensembles:
             cat.remove_ensembles()
 
