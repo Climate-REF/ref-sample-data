@@ -217,7 +217,7 @@ DATASETS_TO_FETCH = [
     CMIP6Request(
         id="esmvaltool-cloud-scatterplots-cmip6",
         facets=dict(
-            source_id="CanESM5",
+            source_id="CESM2",
             table_id=["fx", "Amon"],
             variable_id=[
                 "areacella",
