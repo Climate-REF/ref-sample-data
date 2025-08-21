@@ -120,11 +120,6 @@ class DecimateMixin:
         xr.Dataset
             The downscaled dataset
         """
-        # If less than 10 MB skip decimating
-        small_file_threshold = 10 * 1024**2
-        if dataset.nbytes < small_file_threshold:
-            return dataset
-
         if "time" in dataset.dims and self.time_span is not None:
             result = dataset.sel(time=slice(*self.time_span))
             if result.time.size == 0:
