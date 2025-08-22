@@ -277,6 +277,39 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("1850", "2014"),
     ),
+    # ESMValTool Historical data
+    CMIP6Request(
+        id="esmvaltool-historical-cmip6",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=[
+                "areacella",
+                "hus",
+                "pr",
+                "psl",
+                "tas",
+                "ua",
+            ],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1980", "2014"),
+    ),
+    Obs4MIPsRequest(
+        id="esmvaltool-historical-obs4mips",
+        facets=dict(
+            project="obs4MIPs",
+            source_id="ERA-5",
+            variable_id=[
+                "psl",
+                "tas",
+                "ua",
+            ],
+        ),
+        remove_ensembles=False,
+        time_span=("1980", "2014"),
+    ),
     # ESMValTool TCR data
     CMIP6Request(
         id="esmvaltool-tcr",
