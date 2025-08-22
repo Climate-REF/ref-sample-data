@@ -1,3 +1,5 @@
+import inspect
+import logging
 import pathlib
 from pathlib import Path
 
@@ -8,7 +10,7 @@ import typer
 import xarray as xr
 from loguru import logger
 
-from ref_sample_data import CMIP6Request, DataRequest, Obs4REFRequest
+from ref_sample_data import CMIP6Request, DataRequest, Obs4MIPsRequest, Obs4REFRequest
 
 OUTPUT_PATH = Path("data")
 app = typer.Typer()
@@ -164,8 +166,25 @@ DATASETS_TO_FETCH = [
         facets=dict(
             source_id="ACCESS-ESM1-5",
             frequency=["fx", "mon"],
-            variable_id=["areacella", "tas", "tos", "rsut", "rlut", "rsdt"],
+            variable_id=[
+                "areacella",
+                "tas",
+                "tos",
+                "rsut",
+                "rsdt",
+            ],
             experiment_id=["ssp126", "historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2000", "2025"),
+    ),
+    CMIP6Request(
+        id="example-metric",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["rlut"],
+            experiment_id=["historical"],
         ),
         remove_ensembles=True,
         time_span=("2000", "2025"),
@@ -193,6 +212,41 @@ DATASETS_TO_FETCH = [
         ),
         remove_ensembles=True,
         time_span=("2005", "2014"),
+    ),
+    # ESMValTool cloud scatterplots
+    CMIP6Request(
+        id="esmvaltool-cloud-scatterplots-cmip6",
+        facets=dict(
+            source_id="CESM2",
+            table_id=["fx", "Amon"],
+            variable_id=[
+                "areacella",
+                "cli",
+                "clivi",
+                "clt",
+                "clwvi",
+                "pr",
+                "rlut",
+                "rlutcs",
+                "rsut",
+                "rsutcs",
+                "ta",
+            ],
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("2007", "2014"),
+    ),
+    Obs4MIPsRequest(
+        id="esmvaltool-cloud-scatterplots-obs4mips",
+        facets=dict(
+            project="obs4MIPs",
+            source_id="ERA-5",
+            frequency="mon",
+            variable_id="ta",
+        ),
+        remove_ensembles=False,
+        time_span=("2007", "2015"),
     ),
     # ESMValTool ECS data
     CMIP6Request(
@@ -371,6 +425,32 @@ DATASETS_TO_FETCH = [
 ]
 
 
+# Copied from https://github.com/Delgan/loguru#entirely-compatible-with-standard-logging
+class InterceptHandler(logging.Handler):
+    """Intercepts standard logging messages and redirects them to Loguru."""
+
+    def emit(self, record: logging.LogRecord) -> None:
+        """Emit a record."""
+        # Get corresponding Loguru level if it exists.
+        try:
+            level: str | int = logger.level(record.levelname).name
+        except ValueError:
+            level = record.levelno
+
+        # Find caller from where originated the logged message.
+        frame, depth = inspect.currentframe(), 0
+        while frame:
+            filename = frame.f_code.co_filename
+            is_logging = filename == logging.__file__
+            is_frozen = "importlib" in filename and "_bootstrap" in filename
+            if depth > 0 and not (is_logging or is_frozen):
+                break
+            frame = frame.f_back
+            depth += 1
+
+        logger.opt(depth=depth + 2, exception=record.exc_info).log(level, record.getMessage())
+
+
 @app.command()
 def create_sample_data(
     decimate: bool = True,
@@ -380,6 +460,7 @@ def create_sample_data(
     run_sequentially: bool = False,
 ) -> None:
     """Fetch and create sample datasets"""
+    logging.basicConfig(handlers=[InterceptHandler()], force=True)
     processed_datasets = pd.DataFrame(columns=["source_type", "key", "files", "time_start", "time_end"])
 
     if run_sequentially:
