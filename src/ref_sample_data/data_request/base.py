@@ -64,8 +64,10 @@ def _deduplicate_datasets(datasets: pd.DataFrame) -> pd.DataFrame:
 
     def _deduplicate_group(group: pd.DataFrame) -> pd.DataFrame:
         first = group.iloc[0].copy()
-        first.time_start = group.time_start.min()
-        first.time_end = group.time_end.max()
+        if hasattr(first, "time_start"):
+            first.time_start = group.time_start.min()
+        if hasattr(first, "time_end"):
+            first.time_end = group.time_end.max()
 
         return first
 

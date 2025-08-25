@@ -336,6 +336,29 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("1979", "2014"),
     ),
+    # ESMValTool Sea Ice Sensitivity data
+    CMIP6Request(
+        id="esmvaltool-sea-ice-sensitivity",
+        facets=dict(
+            source_id=["ACCESS-ESM1-5", "CanESM5", "HadGEM3-GC31-LL"],
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "areacello", "siconc", "tas"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("1979", "2014"),
+    ),
+    CMIP6Request(
+        id="esmvaltool-sea-ice-sensitivity",
+        facets=dict(
+            source_id=["HadGEM3-GC31-LL"],
+            frequency=["fx"],
+            variable_id=["areacella", "areacello"],
+            experiment_id=["piControl"],
+        ),
+        remove_ensembles=False,
+        time_span=None,
+    ),
     # ILAMB data
     CMIP6Request(
         id="ilamb-data",
