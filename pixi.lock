@@ -320,7 +320,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/c2/62/96b5217b742805236614f05904541000f55422a6060a90d7fd4ce26c172d/alembic-1.16.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/25/8a/c46dcc25341b5bce5472c718902eb3d38600a903b14fa6aeecef3f21a46f/asttokens-3.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/50/cd/30110dc0ffcf3b131156077b90e9f60ed75711223f306da4db08eff8403b/beautifulsoup4-4.13.4-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/b9/44/86dab7022f650324958ef1f985406843b138ac4298e041c238d9f023678e/climate_ref-0.6.3-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/79/0d/1939d5b53e0147582a7d56a32bba71c356c5159ac5499ffdcb923686ade9/climate_ref-0.6.5-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/2f/da/a2ea9d27b1a5cb9297217d9aa52f7771c34f6419a18075f770e5cab0ff66/climate_ref_core-0.6.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/79/13/13576941bf7cf95026abae43d8427c812c0054408212bf8ed490eda846b0/crc32c-2.7.1-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl
@@ -610,7 +610,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/c2/62/96b5217b742805236614f05904541000f55422a6060a90d7fd4ce26c172d/alembic-1.16.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/25/8a/c46dcc25341b5bce5472c718902eb3d38600a903b14fa6aeecef3f21a46f/asttokens-3.0.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/50/cd/30110dc0ffcf3b131156077b90e9f60ed75711223f306da4db08eff8403b/beautifulsoup4-4.13.4-py3-none-any.whl
-      - pypi: https://files.pythonhosted.org/packages/b9/44/86dab7022f650324958ef1f985406843b138ac4298e041c238d9f023678e/climate_ref-0.6.3-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/79/0d/1939d5b53e0147582a7d56a32bba71c356c5159ac5499ffdcb923686ade9/climate_ref-0.6.5-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/2f/da/a2ea9d27b1a5cb9297217d9aa52f7771c34f6419a18075f770e5cab0ff66/climate_ref_core-0.6.3-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/47/02/2bd65fdef10139b6a802d83a7f966b7750fe5ffb1042f7cbe5dbb6403869/crc32c-2.7.1-cp313-cp313-macosx_11_0_arm64.whl
       - pypi: https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl
@@ -1625,10 +1625,10 @@ packages:
   - pkg:pypi/click?source=hash-mapping
   size: 87749
   timestamp: 1747811451319
-- pypi: https://files.pythonhosted.org/packages/b9/44/86dab7022f650324958ef1f985406843b138ac4298e041c238d9f023678e/climate_ref-0.6.3-py3-none-any.whl
+- pypi: https://files.pythonhosted.org/packages/79/0d/1939d5b53e0147582a7d56a32bba71c356c5159ac5499ffdcb923686ade9/climate_ref-0.6.5-py3-none-any.whl
   name: climate-ref
-  version: 0.6.3
-  sha256: dc0fe158a1d5fdea2f0ebc5213eda6acb45baf078ae0ea272f7ac1bc9c7da8a8
+  version: 0.6.5
+  sha256: 7330788a6574d0d78aabe31c10d7abf979a636ed40c24985275727a95d5db730
   requires_dist:
   - alembic>=1.13.3
   - attrs>=24.2.0
@@ -6535,7 +6535,7 @@ packages:
 - pypi: .
   name: ref-sample-data
   version: 0.6.3
-  sha256: 5f6c4bc7a2da89972fbb94f07a07d0ceecdf7e36f932bd7ead4176c69e262193
+  sha256: e039fab832afec9006a774d821eaf401018488aa957c99927eb98ac17f718566
   requires_python: '>=3.10'
   editable: true
 - conda: https://conda.anaconda.org/conda-forge/noarch/requests-2.32.4-pyhd8ed1ab_0.conda
