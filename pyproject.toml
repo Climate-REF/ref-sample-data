@@ -29,7 +29,7 @@ xesmf = ">=0.8.10,<0.9"
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
-climate-ref = ">=0.6.3,<0.7"
+climate-ref = ">=0.6.5,<0.7"
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"
