@@ -21,6 +21,31 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.0 (2025-08-26)
+
+### Features
+
+- Added the `--only` option to the fetch script to allow regenerating a specific set of requests. ([#42](https://github.com/CMIP-REF/ref-sample-data/pulls/42))
+- Added sample data for cloud scatterplots and made some improvements to facilitate that:
+  - remove broken code from obs4MIPs data request
+  - only download data within requested time range
+  - change regridding so it does not crash on parametric vertical coordinates
+  - show intake-esgf log messages and update version
+
+  ([#44](https://github.com/CMIP-REF/ref-sample-data/pulls/44))
+- Added sample data for sea ice sensitivity diagnostic. ([#45](https://github.com/CMIP-REF/ref-sample-data/pulls/45))
+- Added sample data for historical changes in climate variables. ([#46](https://github.com/CMIP-REF/ref-sample-data/pulls/46))
+
+### Improvements
+
+- Perform the calculations on a self-hosted node.
+  This greatly reduces the time taken to calculate the results. ([#42](https://github.com/CMIP-REF/ref-sample-data/pulls/42))
+
+### Bug Fixes
+
+- Regenerate the sample data ([#43](https://github.com/CMIP-REF/ref-sample-data/pulls/43))
+
+
 ## ref-sample-data 0.6.3 (2025-05-26)
 
 ### Features
