@@ -211,7 +211,7 @@ DATASETS_TO_FETCH = [
             experiment_id="historical",
         ),
         remove_ensembles=True,
-        time_span=("2005", "2014"),
+        time_span=("1996", "2014"),
     ),
     # ESMValTool cloud scatterplots
     CMIP6Request(
