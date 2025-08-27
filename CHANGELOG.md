@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.1 (2025-08-27)
+
+### Features
+
+- Updated cloud radiative effects diagnostic data. ([#47](https://github.com/CMIP-REF/ref-sample-data/pulls/47))
+
+
 ## ref-sample-data 0.7.0 (2025-08-26)
 
 ### Features
