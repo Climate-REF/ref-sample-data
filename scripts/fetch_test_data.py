@@ -277,6 +277,27 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("1850", "2014"),
     ),
+    # ESMValTool fire data
+    CMIP6Request(
+        id="esmvaltool-fire",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=[
+                "cVeg",
+                "hurs",
+                "pr",
+                "sftlf",
+                "tas",
+                "tasmax",
+                "treeFrac",
+                "vegFrac",
+            ],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2013", "2014"),
+    ),
     # ESMValTool Historical data
     CMIP6Request(
         id="esmvaltool-historical-cmip6",
