@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.2 (2025-09-04)
+
+### Features
+
+- Added data for ESMValTool fire diagnostics. ([#48](https://github.com/CMIP-REF/ref-sample-data/pulls/48))
+
+
 ## ref-sample-data 0.7.1 (2025-08-27)
 
 ### Features
