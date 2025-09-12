@@ -235,7 +235,7 @@ DATASETS_TO_FETCH = [
             experiment_id="historical",
         ),
         remove_ensembles=True,
-        time_span=("2007", "2014"),
+        time_span=("1996", "2014"),
     ),
     Obs4MIPsRequest(
         id="esmvaltool-cloud-scatterplots-obs4mips",
