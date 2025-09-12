@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.3 (2025-09-12)
+
+### Improvements
+
+- Update the cloud scatterplot test data match the period in the ESMValTool recipe. ([#49](https://github.com/CMIP-REF/ref-sample-data/pulls/49))
+
+
 ## ref-sample-data 0.7.2 (2025-09-04)
 
 ### Features
