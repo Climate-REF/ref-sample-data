@@ -1,9 +1,11 @@
 import os
 import pathlib
+import tempfile
 from pathlib import Path
 
 import pandas as pd
 import pooch
+import requests
 import xarray as xr
 
 from ref_sample_data.data_request.base import DecimateMixin
@@ -45,10 +47,15 @@ class Obs4REFRequest(DecimateMixin):
             retry_if_failed=10,
             env="REF_DATASET_CACHE_DIR",
         )
-        registry.load_registry(
+        registry_url = (
             f"https://raw.githubusercontent.com/Climate-REF/climate-ref/refs/heads/{self.branch_or_tag}"
             f"/packages/climate-ref/src/climate_ref/dataset_registry/obs4ref_reference.txt"
         )
+        response = requests.get(registry_url, timeout=30)
+        response.raise_for_status()
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8") as tmpfile:
+            tmpfile.write(response.text)
+            registry.load_registry(tmpfile.name)
 
         datasets = []
         for key in registry.registry.keys():
