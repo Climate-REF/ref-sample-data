@@ -1,10 +1,10 @@
+import os
 import pathlib
 from pathlib import Path
 
-import climate_ref  # noqa
 import pandas as pd
+import pooch
 import xarray as xr
-from climate_ref_core.dataset_registry import dataset_registry_manager
 
 from ref_sample_data.data_request.base import DecimateMixin
 
@@ -22,6 +22,13 @@ class Obs4REFRequest(DecimateMixin):
     id = "obs4ref"
     source_type = "obs4REF"
     time_span = None
+    branch_or_tag: str = "main"
+    """
+    The branch or tag to use for fetching the dataset registry
+
+    This defaults to `main` but can be set to a specific tag or branch name to pin a different
+    version of the datasets.
+    """
 
     def fetch_datasets(self) -> pd.DataFrame:
         """
@@ -29,7 +36,19 @@ class Obs4REFRequest(DecimateMixin):
 
         Returns a dataframe of the metadata and paths to the fetched datasets.
         """
-        registry = dataset_registry_manager["obs4ref"]
+        # This mimics how a registry is set up in climate_ref_core.dataset_registry
+        DATASET_URL = os.environ.get("REF_DATASET_URL", default="https://obs4ref.climate-ref.org")
+
+        registry = pooch.create(
+            path=pooch.os_cache("climate_ref"),
+            base_url=DATASET_URL,
+            retry_if_failed=10,
+            env="REF_DATASET_CACHE_DIR",
+        )
+        registry.load_registry(
+            f"https://raw.githubusercontent.com/Climate-REF/climate-ref/refs/heads/{self.branch_or_tag}"
+            f"/packages/climate-ref/src/climate_ref/dataset_registry/obs4ref_reference.txt"
+        )
 
         datasets = []
         for key in registry.registry.keys():
