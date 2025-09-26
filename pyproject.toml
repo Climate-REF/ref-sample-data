@@ -25,6 +25,7 @@ xarray = ">=2025.7.1,<2026"
 typer = ">=0.16.0,<0.17"
 xcdat = ">=0.9.1,<0.10"
 xesmf = ">=0.8.10,<0.9"
+joblib = ">=1.5.2,<2"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
