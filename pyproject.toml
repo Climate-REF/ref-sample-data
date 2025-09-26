@@ -26,12 +26,12 @@ typer = ">=0.16.0,<0.17"
 xcdat = ">=0.9.1,<0.10"
 xesmf = ">=0.8.10,<0.9"
 joblib = ">=1.5.2,<2"
-loguru = ">=0.7.3,<0.8"
 requests = ">=2.32.5,<3"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
+loguru = ">=0.7.3,<0.8"
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"
