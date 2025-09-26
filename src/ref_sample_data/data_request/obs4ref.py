@@ -7,6 +7,7 @@ import pandas as pd
 import pooch
 import requests
 import xarray as xr
+from loguru import logger
 
 from ref_sample_data.data_request.base import DecimateMixin
 
@@ -56,7 +57,7 @@ class Obs4REFRequest(DecimateMixin):
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8") as tmpfile:
             tmpfile.write(response.text)
             registry.load_registry(tmpfile.name)
-
+        logger.info(f"Loaded dataset registry from {registry_url}: {len(registry.registry)} entries")
         datasets = []
         for key in registry.registry.keys():
             dataset_path = registry.fetch(key)
