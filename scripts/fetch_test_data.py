@@ -472,6 +472,28 @@ DATASETS_TO_FETCH = [
         remove_ensembles=True,
         time_span=("2000", "2025"),
     ),
+    CMIP6Request(
+        id="iomb-data-3",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["mon"],
+            variable_id=["thetao"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+        time_span=("2005", "2025"),
+    ),
+    # separate request as ACCESS has volcello as monthly and fixed
+    CMIP6Request(
+        id="iomb-data-4",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx"],
+            variable_id=["volcello"],
+            experiment_id=["historical"],
+        ),
+        remove_ensembles=True,
+    ),
     # PMP modes of variability data
     CMIP6Request(
         id="pmp-modes-of-variability",
