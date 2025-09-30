@@ -55,7 +55,12 @@ class Obs4REFRequest(DecimateMixin):
         response = requests.get(registry_url, timeout=30)
         response.raise_for_status()
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8") as tmpfile:
+            # Write the registry to a temporary file
             tmpfile.write(response.text)
+            tmpfile.flush()
+            logger.debug(f"Downloaded {tmpfile.name}: {response.text.count(os.linesep)} lines")
+
+            # Load the registry from the temporary file
             registry.load_registry(tmpfile.name)
         logger.info(f"Loaded dataset registry from {registry_url}: {len(registry.registry)} entries")
         datasets = []
