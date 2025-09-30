@@ -21,6 +21,14 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.4 (2025-09-26)
+
+### Improvements
+
+- Removes the ERA5 ta data Obs4REF in preference for fetching from Obs4MIPs directly.
+  This also removes the dependency on the climate-ref package. ([#50](https://github.com/CMIP-REF/ref-sample-data/pulls/50))
+
+
 ## ref-sample-data 0.7.3 (2025-09-12)
 
 ### Improvements
