@@ -6,8 +6,7 @@ runs:
     - name: Install pixi
       uses: prefix-dev/setup-pixi@v0.8.11
       with:
-        pixi-version: "v0.49.0"
-        cache: true
-        # Frozen is needed as the ref git dependency was not playing nice with a fully locked environment
-        frozen: true
+        pixi-version: "v0.54.0"
+        cache: false # The self-hosted runners have a local cache
+        locked: true
         log-level: "v"

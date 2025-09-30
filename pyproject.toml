@@ -1,6 +1,6 @@
 [project]
 name = "ref-sample-data"
-version = "0.7.3"
+version = "0.7.4"
 description = "CMIP Rapid Evaluation Framework Sample Data"
 readme = "README.md"
 authors = [
@@ -18,18 +18,20 @@ platforms = ["osx-arm64", "linux-64"]
 [tool.pixi.dependencies]
 python = ">=3.10"
 pooch = ">=1.8.2,<2"
-intake-esgf = ">=2025.7.16,<2026"
+intake-esgf = ">=2025.9.26,<2026"
 matplotlib = ">=3.10.3,<4"
 scipy = ">=1.16.0,<2"
 xarray = ">=2025.7.1,<2026"
 typer = ">=0.16.0,<0.17"
 xcdat = ">=0.9.1,<0.10"
 xesmf = ">=0.8.10,<0.9"
+joblib = ">=1.5.2,<2"
+loguru = ">=0.7,<0.8"
+requests = ">=2.32.5,<3"
 
 [tool.pixi.pypi-dependencies]
 # Add any dependencies that aren't available on conda-forge here
 ref_sample_data = { path = ".", editable = true }
-climate-ref = ">=0.6.5,<0.7"
 
 [tool.pixi.feature.dev.dependencies]
 ruff = "*"

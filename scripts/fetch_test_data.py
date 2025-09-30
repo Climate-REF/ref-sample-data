@@ -507,18 +507,6 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2000", "2025"),
     ),
-    # # Obs4MIPs AIRS data
-    # Obs4MIPsRequest(
-    #     facets=dict(
-    #         project="obs4MIPs",
-    #         institution_id="NASA-JPL",
-    #         frequency="mon",
-    #         source_id="AIRS-2-1",
-    #         variable_id="ta",
-    #     ),
-    #     remove_ensembles=False,
-    #     time_span=("2002", "2016"),
-    # ),
     # All unpublished obs4mips datasets
     Obs4REFRequest(),
 ]
