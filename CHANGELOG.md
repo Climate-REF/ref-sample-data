@@ -21,6 +21,17 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.5 (2025-09-30)
+
+### Features
+
+- Add test data for the OHC-NOAA IOMB diagnostic ([#53](https://github.com/CMIP-REF/ref-sample-data/pulls/53))
+
+### Bug Fixes
+
+- Removes ERA5 ta dataset from obs4REF in preference for obs4MIP ([#354](https://github.com/CMIP-REF/ref-sample-data/pulls/354))
+
+
 ## ref-sample-data 0.7.4 (2025-09-26)
 
 ### Improvements
