@@ -493,6 +493,7 @@ DATASETS_TO_FETCH = [
             experiment_id=["historical"],
         ),
         remove_ensembles=True,
+        time_span=None,
     ),
     # PMP modes of variability data
     CMIP6Request(
