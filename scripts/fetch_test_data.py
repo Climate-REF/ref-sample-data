@@ -258,7 +258,7 @@ DATASETS_TO_FETCH = [
             experiment_id=["abrupt-4xCO2", "piControl"],
         ),
         remove_ensembles=True,
-        time_span=("0101", "0125"),
+        time_span=("0101", "0250"),
     ),
     # ESMValTool ENSO data
     CMIP6Request(
