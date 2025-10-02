@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.6 (2025-10-02)
+
+### Improvements
+
+- Increased the timerange for the ECS diagnostic. ([#54](https://github.com/CMIP-REF/ref-sample-data/pulls/54))
+
+
 ## ref-sample-data 0.7.5 (2025-09-30)
 
 ### Features
