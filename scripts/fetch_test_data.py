@@ -333,15 +333,26 @@ DATASETS_TO_FETCH = [
     ),
     # ESMValTool TCR data
     CMIP6Request(
-        id="esmvaltool-tcr",
+        id="esmvaltool-tcr-1pctco2",
         facets=dict(
-            source_id="ACCESS-ESM1-5",
+            source_id="CanESM5",
             frequency=["fx", "mon"],
             variable_id=["areacella", "tas"],
-            experiment_id=["1pctCO2", "piControl"],
+            experiment_id="1pctCO2",
         ),
         remove_ensembles=True,
-        time_span=("0101", "0180"),
+        time_span=("1850", "1989"),
+    ),
+    CMIP6Request(
+        id="esmvaltool-tcr-piControl",
+        facets=dict(
+            source_id="CanESM5",
+            frequency=["fx", "mon"],
+            variable_id=["areacella", "tas"],
+            experiment_id="piControl",
+        ),
+        remove_ensembles=True,
+        time_span=("5201", "5340"),
     ),
     # ESMValTool TCRE data
     CMIP6Request(
