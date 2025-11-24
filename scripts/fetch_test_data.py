@@ -248,6 +248,17 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2007", "2015"),
     ),
+    Obs4MIPsRequest(
+        id="esmvaltool-ozone-diagnostics-obs4mips",
+        facets=dict(
+            project="obs4MIPs",
+            source_id="C3S-GTO-ECV-9-0",
+            frequency="mon",
+            variable_id="toz",
+        ),
+        remove_ensembles=False,
+        time_span=("1995", "2022"),
+    ),
     # ESMValTool ECS data
     CMIP6Request(
         id="esmvaltool-ecs",
@@ -330,6 +341,22 @@ DATASETS_TO_FETCH = [
         ),
         remove_ensembles=False,
         time_span=("1980", "2014"),
+    ),
+    # ESMValTool ozone diagnostics
+    CMIP6Request(
+        id="esmvaltool-ozone-diagnostics-cmip6",
+        facets=dict(
+            source_id="MPI-ESM1-2-LR",
+            table_id=["fx", "AERmon"],
+            variable_id=[
+                "areacella",
+                "ps",
+                "o3",
+            ],
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("1995", "2014"),
     ),
     # ESMValTool TCR data
     CMIP6Request(
