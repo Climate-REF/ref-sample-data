@@ -350,8 +350,8 @@ DATASETS_TO_FETCH = [
             table_id=["fx", "AERmon"],
             variable_id=[
                 "areacella",
-                "ps",
                 "o3",
+                "toz",
             ],
             experiment_id="historical",
         ),
