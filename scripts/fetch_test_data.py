@@ -346,13 +346,14 @@ DATASETS_TO_FETCH = [
     CMIP6Request(
         id="esmvaltool-ozone-diagnostics-cmip6",
         facets=dict(
-            source_id="MPI-ESM1-2-LR",
+            source_id="CNRM-ESM2-1",
             table_id=["fx", "AERmon"],
             variable_id=[
                 "areacella",
                 "o3",
                 "toz",
             ],
+            variant_label="r1i1p1f2",
             experiment_id="historical",
         ),
         remove_ensembles=True,
