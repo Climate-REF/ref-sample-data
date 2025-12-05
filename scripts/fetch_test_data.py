@@ -3,6 +3,7 @@ import logging
 import pathlib
 from pathlib import Path
 
+import intake_esgf
 import joblib
 import pandas as pd
 import pooch
@@ -605,4 +606,6 @@ def create_sample_data(
 
 
 if __name__ == "__main__":
+    # Enable ESGF CEDA Solr index to find obs4MIPs dataset C3S-GTO-ECV-9-0
+    intake_esgf.conf["solr_indices"]["esgf.ceda.ac.uk"] = True
     app()
