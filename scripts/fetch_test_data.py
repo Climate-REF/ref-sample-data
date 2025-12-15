@@ -3,6 +3,7 @@ import logging
 import pathlib
 from pathlib import Path
 
+import intake_esgf
 import joblib
 import pandas as pd
 import pooch
@@ -331,6 +332,47 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("1980", "2014"),
     ),
+    # ESMValTool ozone diagnostics
+    CMIP6Request(
+        id="esmvaltool-ozone-diagnostics2d-cmip6",
+        facets=dict(
+            source_id="CNRM-ESM2-1",
+            table_id=["fx", "AERmon"],
+            variable_id=[
+                "areacella",
+                "toz",
+            ],
+            variant_label="r1i1p1f2",
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("1950", "2014"),
+    ),
+    CMIP6Request(
+        id="esmvaltool-ozone-diagnostics3d-cmip6",
+        facets=dict(
+            source_id="CNRM-ESM2-1",
+            table_id=["Amon"],
+            variable_id=[
+                "o3",
+            ],
+            variant_label="r1i1p1f2",
+            experiment_id="historical",
+        ),
+        remove_ensembles=True,
+        time_span=("2005", "2014"),
+    ),
+    Obs4MIPsRequest(
+        id="esmvaltool-ozone-diagnostics-obs4mips",
+        facets=dict(
+            project="obs4MIPs",
+            source_id="C3S-GTO-ECV-9-0",
+            frequency="mon",
+            variable_id="toz",
+        ),
+        remove_ensembles=False,
+        time_span=("1996", "2021"),
+    ),
     # ESMValTool TCR data
     CMIP6Request(
         id="esmvaltool-tcr",
@@ -577,4 +619,6 @@ def create_sample_data(
 
 
 if __name__ == "__main__":
+    # Enable ESGF CEDA Solr index to find obs4MIPs dataset C3S-GTO-ECV-9-0
+    intake_esgf.conf["solr_indices"]["esgf.ceda.ac.uk"] = True
     app()
