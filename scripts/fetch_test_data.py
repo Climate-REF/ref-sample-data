@@ -550,6 +550,31 @@ DATASETS_TO_FETCH = [
         remove_ensembles=False,
         time_span=("2000", "2025"),
     ),
+    # PMP ENSO data
+    CMIP6Request(
+        id="pmp-enso",
+        facets=dict(
+            source_id="ACCESS-ESM1-5",
+            frequency=["fx", "mon"],
+            variable_id=[
+                "areacella",
+                "sftlf",
+                "ts",
+                "tauu",
+                "taux",
+                "hfls",
+                "hfss",
+                "rlds",
+                "rlus",
+                "rsds",
+                "rsus",
+            ],
+            experiment_id=["historical"],
+            variant_label=["r1i1p1f1"],
+        ),
+        remove_ensembles=False,
+        time_span=("2000", "2025"),
+    ),
     # All unpublished obs4mips datasets
     Obs4REFRequest(),
 ]
