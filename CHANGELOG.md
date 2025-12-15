@@ -21,6 +21,13 @@ from the examples given in that link.
 
 <!-- towncrier release notes start -->
 
+## ref-sample-data 0.7.7 (2025-12-15)
+
+### Features
+
+- Added CMIP6 and obs4MIPs data for ESMValTool ozone diagnostics ([#58](https://github.com/CMIP-REF/ref-sample-data/pulls/58))
+
+
 ## ref-sample-data 0.7.6 (2025-10-02)
 
 ### Improvements
